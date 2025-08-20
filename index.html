@@ -113,7 +113,7 @@
   <section id="home" class="relative overflow-hidden">
   <div class="absolute inset-0 bg-grid pointer-events-none" aria-hidden="true"></div>
     <div class="max-w-6xl mx-auto px-4 pt-16 pb-20">
-      <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div class="grid md:grid-cols-[3fr_2fr] gap-10 items-center">
         <div>
           <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
             Sam A. Scivier <span class="text-base sm:text-xl font-normal text-slate-600 dark:text-slate-300 ml-3">(he / him)</span>
@@ -134,12 +134,9 @@
           </div>
         </div>
         <div class="relative">
-          <div class="aspect-square rounded-3xl bg-gradient-to-br from-brand/20 to-transparent border border-slate-200 dark:border-slate-800 p-4">
-            <!-- Optional profile image: replace the SVG below with an <img> of yourself -->
-            <svg viewBox="0 0 200 200" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="100" cy="60" r="36" class="fill-brand/40"></circle>
-              <rect x="32" y="110" width="136" height="70" rx="35" class="fill-brand/20"></rect>
-            </svg>
+          <div class="rounded-3xl bg-gradient-to-br from-brand/20 to-transparent border border-slate-200 dark:border-slate-800 overflow-hidden" style="aspect-ratio: 2 / 3;">
+            <!-- Profile image: replace /assets/me.jpg with your photo file -->
+            <img src="/assets/me.jpg" alt="Sam Scivier" class="w-full h-full object-cover" />
           </div>
           <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Add your photo by replacing the SVG with an <code>&lt;img src="/assets/me.jpg" alt="Sam Scivier" /&gt;</code>.</p>
         </div>
