@@ -1,2 +1,2 @@
 # sscivier.github.io
-Sam Scivier's personal site.
+Sam A. Scivier's personal site.
