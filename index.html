@@ -202,21 +202,12 @@
       <div class="max-w-5xl">
         <div class="flex items-center justify-between gap-4">
           <h2 class="text-2xl font-semibold">Open‑Source Software</h2>
-          <a href="https://github.com/sscivier" class="text-sm underline hover:text-brand">@sscivier on GitHub →</a>
+          <a href="https://github.com/sscivier" class="text-sm underline hover:text-brand">See more @sscivier on GitHub →</a>
         </div>
-        <p class="mt-4 text-slate-600 dark:text-slate-300">Link to selected repositories. Replace the examples below with your own.</p>
         <div class="mt-6 grid md:grid-cols-2 gap-4" id="repos">
-          <!-- Replace with your projects -->
-          <a href="https://github.com/sscivier" class="block p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-soft">
-            <div class="text-sm text-brand">Repository</div>
-            <div class="font-medium mt-1">Your Project Name</div>
-            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">One‑sentence description of the repository.</p>
-          </a>
-          <a href="https://github.com/sscivier" class="block p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-soft">
-            <div class="text-sm text-brand">Repository</div>
-            <div class="font-medium mt-1">Another Project</div>
-            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">One‑sentence description of the repository.</p>
-          </a>
+          <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 text-center">
+            <div class="text-sm text-slate-500">Loading repositories...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -247,13 +238,9 @@
       <div class="grid md:grid-cols-2 gap-10 items-start">
         <div>
           <h2 class="text-2xl font-semibold">Contact</h2>
-          <p class="mt-4 text-slate-600 dark:text-slate-300">The simplest way to reach me is via the links below:</p>
+          <p class="mt-4 text-slate-600 dark:text-slate-300">If you'd like to get in touch, please email me at:</p>
           <ul class="mt-6 space-y-2 text-sm">
-            <li><a class="underline hover:text-brand" href="https://www.earth.ox.ac.uk/people/sam-scivier">Department profile</a></li>
-            <li><a class="underline hover:text-brand" href="https://github.com/sscivier">GitHub</a></li>
-            <li><a class="underline hover:text-brand" href="https://scholar.google.com/citations?user=aAvhqzIAAAAJ&hl=en">Google Scholar</a></li>
-            <!-- Add your preferred email below, e.g. mailto:firstname.lastname@earth.ox.ac.uk -->
-            <li><a class="underline hover:text-brand" href="mailto:you@ox.ac.uk">you@ox.ac.uk</a></li>
+            <li><span id="email-contact" class="hover:text-brand cursor-pointer">sam.scivier [at] earth.ox.ac.uk</span></li>
           </ul>
         </div>
         <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
@@ -287,6 +274,13 @@
     });
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Email contact - decode and make clickable
+    document.getElementById('email-contact').addEventListener('click', () => {
+      const user = 'sam.scivier';
+      const domain = 'earth.ox.ac.uk';
+      window.location.href = 'mailto:' + user + '@' + domain;
+    });
 
   // Publications: fetch, parse BibTeX, convert LaTeX accents, format full author list, render cards with DOI/PDF icons, and filter by type.
     (function renderFromBib(){
@@ -691,6 +685,92 @@
         console.error('Could not load publications.bib', err);
         wrap.innerHTML = `<p class="text-sm text-rose-600 dark:text-rose-400">Failed to load publications: ${escapeHTML(err.message)}</p>`;
       });
+    })();
+
+    // GitHub Repositories: fetch pinned repos and display with descriptions
+    (function loadGitHubRepos() {
+      const reposContainer = document.getElementById('repos');
+      if (!reposContainer) return;
+
+      // Known pinned repositories (manually maintained list)
+      const pinnedRepoNames = [
+        'gp-prob-earthquake-shaking',
+        'intelligent-earth-cdt-earthquakes-gp',
+        'equinox-nn-example',
+        'neural-process-example'
+      ];
+
+      // Function to get repository description
+      const getRepoDescription = (repo) => {
+        if (repo.description && repo.description.trim()) {
+          return repo.description.trim();
+        }
+        return 'Research software and tools.';
+      };
+
+      // GitHub API URL for user repositories
+      const username = 'sscivier';
+      const apiUrl = `https://api.github.com/users/${username}/repos?per_page=100`;
+      
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`GitHub API responded with status ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(repos => {
+          // Filter for the specific pinned repositories
+          const pinnedRepos = pinnedRepoNames
+            .map(name => repos.find(repo => repo.name === name))
+            .filter(repo => repo && !repo.fork && !repo.archived);
+          
+          renderRepositories(pinnedRepos);
+        })
+      .catch(error => {
+        console.error('Error fetching GitHub repositories:', error);
+        reposContainer.innerHTML = `
+          <div class="col-span-2 text-center p-8">
+            <div class="text-sm text-slate-500 mb-2">Unable to load repositories</div>
+            <a href="https://github.com/${username}" class="text-brand hover:text-brand-dark text-sm underline">View on GitHub →</a>
+          </div>
+        `;
+      });
+
+      function renderRepositories(repos) {
+        if (repos.length === 0) {
+          reposContainer.innerHTML = '<div class="col-span-2 text-center text-slate-500 p-8">No repositories found.</div>';
+          return;
+        }
+
+        const repoCards = repos.map(repo => {
+          const description = getRepoDescription(repo);
+          const language = repo.language || 'Code';
+          const stars = repo.stargazers_count || 0;
+          const lastUpdated = new Date(repo.updated_at).toLocaleDateString();
+
+          return `
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="block p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-soft transition-all duration-200 hover:border-brand/30">
+              <div class="flex items-start justify-between gap-2 mb-2">
+                <div class="text-sm text-brand font-medium">${language}</div>
+                <div class="flex items-center gap-3 text-xs text-slate-500">
+                  ${stars > 0 ? `<span class="flex items-center gap-1">
+                    <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    ${stars}
+                  </span>` : ''}
+                </div>
+              </div>
+              <div class="font-medium mb-2">${repo.name}</div>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${description}</p>
+              <div class="mt-3 text-xs text-slate-400">Updated ${lastUpdated}</div>
+            </a>
+          `;
+        });
+
+        reposContainer.innerHTML = repoCards.join('');
+      }
     })();
   </script>
 </body>
