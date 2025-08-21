@@ -150,19 +150,19 @@
         <h2 class="text-2xl font-semibold">Research</h2>
         <p class="mt-4 text-slate-600 dark:text-slate-300">Briefly describe your interests and current projects here. You can include themes, questions, methods, and collaborations.</p>
         <ul class="mt-6 grid sm:grid-cols-2 gap-4">
-          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
             <h3 class="font-medium">Theme #1</h3>
             <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">One‑sentence description of a research theme.</p>
           </li>
-          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
             <h3 class="font-medium">Theme #2</h3>
             <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">One‑sentence description of a research theme.</p>
           </li>
-          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
             <h3 class="font-medium">Theme #3</h3>
             <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">One‑sentence description of a research theme.</p>
           </li>
-          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
             <h3 class="font-medium">Methods & Data</h3>
             <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">e.g., field observations, remote sensing, numerical modelling, open datasets.</p>
           </li>
@@ -219,11 +219,11 @@
       <div class="max-w-3xl">
         <h2 class="text-2xl font-semibold">Teaching & Outreach</h2>
         <ul class="mt-6 space-y-3">
-          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
             <div class="font-medium">Course or tutorial</div>
             <div class="text-sm text-slate-600 dark:text-slate-300">Institution • Year • short description</div>
           </li>
-          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+          <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
             <div class="font-medium">Talk or workshop</div>
             <div class="text-sm text-slate-600 dark:text-slate-300">Event • Year • short description</div>
           </li>
@@ -243,7 +243,7 @@
             <li><span id="email-contact" class="hover:text-brand cursor-pointer">sam.scivier [at] earth.ox.ac.uk</span></li>
           </ul>
         </div>
-        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
+        <div class="p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
           <h3 class="font-medium">Short Bio</h3>
           <p class="mt-3 text-sm text-slate-700 dark:text-slate-300">Write 3–4 sentences about your background, current position, and interests. You can copy from your department page and tweak for tone.</p>
           <div class="mt-4 flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
@@ -540,7 +540,7 @@
         const uniqueId = `abstract-${p._key || Math.random().toString(36).substr(2, 9)}`;
 
         return `
-          <article class="relative p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm hover:shadow-soft transition ${cat}" data-category="${cat}">
+          <article class="relative p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 shadow-sm hover:shadow-soft transition ${cat}" data-category="${cat}">
             ${renderIcons(p)}
             <div class="absolute top-4 right-4 text-xs text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-800 px-2 py-1 rounded-full">${escapeHTML(latexToUnicode(year))}</div>
             <h3 class="font-semibold text-slate-900 dark:text-slate-100 leading-snug">
@@ -750,7 +750,7 @@
           const lastUpdated = new Date(repo.updated_at).toLocaleDateString();
 
           return `
-            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="block p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-soft transition-all duration-200 hover:border-brand/30">
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="block p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 hover:shadow-soft transition-all duration-200 hover:border-brand/30">
               <div class="flex items-start justify-between gap-2 mb-2">
                 <div class="text-sm text-brand font-medium">${language}</div>
                 <div class="flex items-center gap-3 text-xs text-slate-500">
