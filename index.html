@@ -176,7 +176,15 @@
     <div class="max-w-6xl mx-auto px-4">
       <div class="max-w-4xl">
         <h2 class="text-2xl font-semibold">Selected Publications</h2>
-        <p class="mt-4 text-slate-600 dark:text-slate-300">A short list pulled from Google Scholar (manual). Add or edit entries in the inline JSON below.</p>
+        <p class="mt-4 text-slate-600 dark:text-slate-300">Loaded from <code>/bib/publications.bib</code>. Use the filters to narrow by type.</p>
+
+        <!-- Filter buttons -->
+        <div id="pub-filters" class="mt-4 flex flex-wrap gap-2" role="tablist" aria-label="Filter publications">
+          <button type="button" class="pub-filter px-3 py-1.5 rounded-xl border border-slate-300/70 dark:border-slate-700/70 text-sm hover:bg-slate-100 dark:hover:bg-slate-800 bg-brand text-white" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="pub-filter px-3 py-1.5 rounded-xl border border-slate-300/70 dark:border-slate-700/70 text-sm hover:bg-slate-100 dark:hover:bg-slate-800" data-filter="article" aria-pressed="false">Journal Articles</button>
+          <button type="button" class="pub-filter px-3 py-1.5 rounded-xl border border-slate-300/70 dark:border-slate-700/70 text-sm hover:bg-slate-100 dark:hover:bg-slate-800" data-filter="inproceedings" aria-pressed="false">Conference Papers</button>
+          <button type="button" class="pub-filter px-3 py-1.5 rounded-xl border border-slate-300/70 dark:border-slate-700/70 text-sm hover:bg-slate-100 dark:hover:bg-slate-800" data-filter="preprint" aria-pressed="false">Preprints</button>
+        </div>
 
         <div id="pubs" class="mt-6 grid gap-4"></div>
 
@@ -281,12 +289,51 @@
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Publications: fetch, parse a minimal subset of BibTeX, and render styled cards.
+  // Publications: fetch, parse BibTeX, convert LaTeX accents, format full author list, render cards with DOI/PDF icons, and filter by type.
     (function renderFromBib(){
       const wrap = document.getElementById('pubs');
       if (!wrap) return;
 
-      const escapeHTML = (s = '') => s.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c]));
+      const escapeHTML = (s = '') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c]));
+
+      const latexToUnicode = (s = '') => {
+        if (!s) return '';
+        // common LaTeX accents -> unicode
+        const map = {
+          "'": { a: 'á', e: 'é', i: 'í', o: 'ó', u: 'ú', A: 'Á', E: 'É', I: 'Í', O: 'Ó', U: 'Ú' },
+          '"': { a: 'ä', e: 'ë', i: 'ï', o: 'ö', u: 'ü', A: 'Ä', E: 'Ë', I: 'Ï', O: 'Ö', U: 'Ü', y: 'ÿ', Y: 'Ÿ' },
+          '`': { a: 'à', e: 'è', i: 'ì', o: 'ò', u: 'ù', A: 'À', E: 'È' },
+          '^': { a: 'â', e: 'ê', i: 'î', o: 'ô', u: 'û', A: 'Â', E: 'Ê' },
+          '~': { n: 'ñ', N: 'Ñ' },
+        };
+
+        // replace \i (dotless i)
+        s = s.replace(/\\i/g, 'ı');
+        s = s.replace(/\\I/g, 'İ');
+
+        // \c{c} -> ç, \c{s} -> ş
+        s = s.replace(/\\c\{?s\}?/gi, 'ş');
+        s = s.replace(/\\c\{?c\}?/gi, 'ç');
+
+        // generic accent patterns like \'{a} or \'a
+        s = s.replace(/\\(["'`^~])\{?([^}])\}?/g, (m, acc, ch) => {
+          const table = map[acc];
+          if (table && table[ch]) return table[ch];
+          return ch;
+        });
+
+        // handle sequences like {\'a} or {\"u}
+        s = s.replace(/\{\\(["'`^~])\s*([^}])\}/g, (m, acc, ch) => {
+          const table = map[acc];
+          if (table && table[ch]) return table[ch];
+          return ch;
+        });
+
+        // remove remaining braces
+        s = s.replace(/[{}]/g, '');
+        // collapse multiple spaces
+        return s.replace(/\s+/g, ' ').trim();
+      };
 
       const parseBib = (text = '') => {
         const entries = [];
@@ -297,13 +344,52 @@
           const key = m[2];
           const body = m[3];
           const fields = {};
-          const fieldRe = /([a-zA-Z0-9_\-]+)\s*=\s*(?:\{([\s\S]*?)\}|"([\s\S]*?)")\s*,?/g;
-          let f;
-          while ((f = fieldRe.exec(body)) !== null) {
-            const name = f[1].toLowerCase();
-            const val = (f[2] !== undefined ? f[2] : f[3] || '').replace(/\s+/g, ' ').trim();
-            fields[name] = val;
+          
+          // Parse fields with proper brace matching
+          let pos = 0;
+          while (pos < body.length) {
+            // Skip whitespace
+            while (pos < body.length && /\s/.test(body[pos])) pos++;
+            if (pos >= body.length) break;
+            
+            // Find field name
+            const fieldStart = pos;
+            while (pos < body.length && /[a-zA-Z0-9_\-]/.test(body[pos])) pos++;
+            if (pos === fieldStart) break;
+            const fieldName = body.slice(fieldStart, pos).toLowerCase();
+            
+            // Skip whitespace and =
+            while (pos < body.length && /[\s=]/.test(body[pos])) pos++;
+            if (pos >= body.length) break;
+            
+            let fieldValue = '';
+            if (body[pos] === '{') {
+              // Parse braced value with proper nesting
+              let braceCount = 0;
+              const valueStart = pos;
+              do {
+                if (body[pos] === '{') braceCount++;
+                else if (body[pos] === '}') braceCount--;
+                pos++;
+              } while (pos < body.length && braceCount > 0);
+              fieldValue = body.slice(valueStart + 1, pos - 1); // Remove outer braces
+            } else if (body[pos] === '"') {
+              // Parse quoted value
+              pos++; // Skip opening quote
+              const valueStart = pos;
+              while (pos < body.length && body[pos] !== '"') pos++;
+              fieldValue = body.slice(valueStart, pos);
+              pos++; // Skip closing quote
+            }
+            
+            if (fieldValue) {
+              fields[fieldName] = fieldValue.replace(/\s+/g, ' ').trim();
+            }
+            
+            // Skip comma and whitespace
+            while (pos < body.length && /[\s,]/.test(body[pos])) pos++;
           }
+          
           fields._type = type;
           fields._key = key;
           entries.push(fields);
@@ -311,22 +397,117 @@
         return entries;
       };
 
+      // Determine a display category for filtering
+      const getCategory = (p) => {
+        const t = (p._type || '').toLowerCase();
+        
+        // Prioritize explicit BibTeX types first
+        if (t === 'inproceedings' || t === 'conference' || t === 'proceedings') return 'inproceedings';
+        if (t === 'article') return 'article';
+        
+        // Then check content for preprints (only if not explicitly typed as conference/article)
+        const text = (p.journal || '') + ' ' + (p.note || '') + ' ' + (p.url || '') + ' ' + (p.howpublished || '');
+        const arxivMatch = text.match(/arXiv[:\s]?([0-9]{4}\.[0-9]{4,5})(v\d+)?/i);
+        const isPreprintKeyword = /\bpreprint\b/i.test(text);
+        if (arxivMatch || isPreprintKeyword) return 'preprint';
+        
+        if (t === 'misc') {
+          // Treat misc without arXiv as misc, otherwise caught above as preprint
+          return 'misc';
+        }
+        
+        return t || 'other';
+      };
+
+      const formatAuthors = (raw = '') => {
+        if (!raw) return '';
+        // Split by standard BibTeX ' and ' separator
+        const authors = raw.split(/ and /i);
+        
+        // Limit to 25 authors, add "and others" if truncated
+        const maxAuthors = 25;
+        const truncated = authors.length > maxAuthors;
+        const displayAuthors = truncated ? authors.slice(0, maxAuthors) : authors;
+        
+        const formatted = displayAuthors.map(author => {
+          // Clean up braces and apply LaTeX conversion
+          let name = author.replace(/^\{+|}+$/g, '').trim();
+          name = latexToUnicode(name);
+          
+          // Convert "Last, First Middle" to "First Middle Last"
+          if (name.includes(',')) {
+            const [last, first] = name.split(',', 2);
+            name = `${first.trim()} ${last.trim()}`;
+          }
+          
+          // Add periods to single-letter initials (only ASCII letters to avoid special chars)
+          name = name.replace(/\b([A-Z])\b(?![.\u00C0-\u017F])/g, '$1.');
+          
+          // Bold your surname
+          if (/\bscivier\b/i.test(name)) {
+            return `<strong>${escapeHTML(name)}</strong>`;
+          }
+          
+          return escapeHTML(name);
+        });
+        
+        // Add "and others" if we truncated the author list
+        if (truncated) {
+          formatted.push('and others');
+        }
+        
+        return formatted.join('; ');
+      };
+
+  const renderIcons = (p) => {
+        const doi = (p.doi || '').replace(/^(doi:\s*)/i,'').trim();
+        const url = (p.url || '').trim();
+  // detect arXiv id in journal or note or url or howpublished
+        let arxivId = '';
+  const arxivMatch = (p.journal || p.note || p.url || p.howpublished || '').match(/arXiv[:\s]?([0-9]{4}\.[0-9]{4,5})(v\d+)?/i);
+        if (arxivMatch) arxivId = arxivMatch[1];
+
+  const icons = [];
+        if (doi) {
+          const doiUrl = `https://doi.org/${encodeURIComponent(doi)}`;
+          icons.push(`<a href="${doiUrl}" target="_blank" rel="noopener noreferrer" aria-label="DOI" class="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-brand"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" class=\"h-4 w-4\" fill=\"currentColor\"><path d=\"M3.9 12a5 5 0 017.07-7.07l1.41 1.41-1.06 1.06-1.41-1.4A3 3 0 004 12a3 3 0 005.12 2.12l-1.06-1.06A1 1 0 006 12a1 1 0 011.71-.71l3.18 3.18a1 1 0 01-1.41 1.41L6.2 12.2A5 5 0 013.9 12z\"></path><path d=\"M14.83 6.34l1.06-1.06A5 5 0 1120.1 12a5 5 0 01-7.07-7.07l1.06 1.06-1.41 1.41 1.41 1.41 1.41-1.41z\"></path></svg><span class=\"sr-only\">DOI</span></a>`);
+        }
+        if (url) {
+          icons.push(`<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" aria-label="Link/PDF" class="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-brand"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" class=\"h-4 w-4\" fill=\"currentColor\"><path d=\"M19 2H8a2 2 0 00-2 2v3h2V4h11v16H8v-3H6v3a2 2 0 002 2h11a2 2 0 002-2V4a2 2 0 00-2-2z\"></path><path d=\"M13 9V3.5L18.5 9H13z\"></path></svg><span class=\"sr-only\">Link</span></a>`);
+        } else if (arxivId) {
+          const pdf = `https://arxiv.org/pdf/${arxivId}.pdf`;
+          icons.push(`<a href="${pdf}" target="_blank" rel="noopener noreferrer" aria-label="arXiv PDF" class="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-brand"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" class=\"h-4 w-4\" fill=\"currentColor\"><path d=\"M12 2L3 7v7c0 5 4 9 9 9s9-4 9-9V7l-9-5zM7 10.5l5 3 5-3V8l-5 3-5-3v2.5z\"></path></svg><span class=\"sr-only\">PDF</span></a>`);
+        }
+        // Add BibTeX export button (uses data-key attribute and is wired up after render)
+        icons.push(`<button type=\"button\" data-bib-key=\"${escapeHTML(p._key)}\" class=\"bib-export inline-flex items-center gap-1 text-xs text-slate-500 hover:text-brand\" aria-label=\"Export BibTeX\">` +
+          `<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" class=\"h-4 w-4\" fill=\"currentColor\"><path d=\"M12 2a2 2 0 00-2 2v12a2 2 0 002 2h6v2H6V8h2v8h6V6a2 2 0 00-2-2z\"></path><path d=\"M18 2h-6v4h6V2z\"></path></svg><span class=\"sr-only\">BibTeX</span></button>`);
+
+  if (icons.length === 0) return '';
+  return `<div class=\"absolute bottom-4 right-4 flex items-center gap-2\">${icons.join('')}</div>`;
+      };
+
       const renderCard = (p) => {
         const year = p.year || '';
-        const title = p.title || '';
-        const authors = p.author || p.authors || '';
-        const venue = p.journal || p.booktitle || p.publisher || p.journal || '';
-        const doi = (p.doi || '').replace(/^(doi:\s*)/i,'');
-        const url = p.url || (doi ? `https://doi.org/${doi}` : '') || '';
-        const note = p.note || '';
+        const title = latexToUnicode(p.title || '');
+        const authors = formatAuthors(p.author || p.authors || '');
+        const venueRaw = p.journal || p.booktitle || p.publisher || '';
+        const venue = latexToUnicode(venueRaw);
+  const doi = (p.doi || '').replace(/^(doi:\s*)/i,'');
+  const rawUrl = p.url || '';
+  const arxivMatch2 = (p.journal || p.note || p.url || p.howpublished || '').match(/arXiv[:\s]?([0-9]{4}\.[0-9]{4,5})(v\d+)?/i);
+  const arxivAbs = arxivMatch2 ? `https://arxiv.org/abs/${arxivMatch2[1]}` : '';
+  const url = rawUrl || (doi ? `https://doi.org/${doi}` : '') || arxivAbs || '';
+        const note = latexToUnicode(p.note || '');
+        const cat = p._category || getCategory(p);
 
         return `
-          <article class="relative p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm hover:shadow-soft transition">
-            <div class="absolute top-4 right-4 text-xs text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-800 px-2 py-1 rounded-full">${escapeHTML(year)}</div>
+          <article class="relative p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm hover:shadow-soft transition ${cat}" data-category="${cat}">
+            ${renderIcons(p)}
+            <div class="absolute top-4 right-4 text-xs text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-800 px-2 py-1 rounded-full">${escapeHTML(latexToUnicode(year))}</div>
             <h3 class="font-semibold text-slate-900 dark:text-slate-100 leading-snug">
               ${ url ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" class="hover:text-brand">${escapeHTML(title)}</a>` : escapeHTML(title) }
             </h3>
-            <div class="mt-2 text-sm text-slate-600 dark:text-slate-300">${escapeHTML(authors)}</div>
+            <div class="mt-2 text-sm text-slate-600 dark:text-slate-300 break-words">${authors}</div>
             <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">${escapeHTML(venue)}</div>
             ${ note ? `<p class='text-sm mt-3 text-slate-600 dark:text-slate-300'>${escapeHTML(note)}</p>` : '' }
           </article>
@@ -338,14 +519,88 @@
         return r.text();
       }).then(text => {
         const pubs = parseBib(text);
-        // derive numeric year for sorting where possible
-        pubs.forEach(p => { p._yearNum = parseInt((p.year||'').match(/\d{4}/)?.[0] || '0', 10) || 0; });
+        // convert LaTeX in fields where useful
+        pubs.forEach(p => {
+          // attempt to normalize year number
+          p._yearNum = parseInt((p.year||'').match(/\d{4}/)?.[0] || '0', 10) || 0;
+          // compute category for filtering
+          p._category = getCategory(p);
+        });
         pubs.sort((a,b) => (b._yearNum - a._yearNum) || (a._key || '').localeCompare(b._key || ''));
         if (pubs.length === 0) {
           wrap.innerHTML = '<p class="text-sm text-slate-600 dark:text-slate-300">No publications found in <code>/bib/publications.bib</code>.</p>';
           return;
         }
         wrap.innerHTML = pubs.map(renderCard).join('');
+
+        // Attach BibTeX export handlers
+        const makeBibString = (entry) => {
+          const lines = [];
+          const t = entry._type || 'article';
+          const k = entry._key || 'key';
+          lines.push(`@${t}{${k},`);
+          Object.keys(entry).forEach(f => {
+            if (f.startsWith('_')) return;
+            const val = entry[f];
+            // wrap in braces and preserve original spacing
+            lines.push(`  ${f} = {${val}},`);
+          });
+          // replace trailing comma on last field
+          if (lines.length > 1) {
+            const last = lines.pop();
+            lines.push(last.replace(/,$/, ''));
+          }
+          lines.push('}');
+          return lines.join('\n');
+        };
+
+        document.querySelectorAll('.bib-export').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const key = btn.getAttribute('data-bib-key');
+            const entry = pubs.find(p => p._key === key);
+            if (!entry) return;
+            const bib = makeBibString(entry);
+            const blob = new Blob([bib], {type: 'text/plain;charset=utf-8'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${entry._key || 'publication'}.bib`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          });
+        });
+
+        // Init simple filter buttons: show/hide cards by data-category
+        const filtersWrap = document.getElementById('pub-filters');
+        if (filtersWrap) {
+          const buttons = Array.from(filtersWrap.querySelectorAll('.pub-filter'));
+          const setActive = (active) => {
+            buttons.forEach(b => {
+              const on = b.getAttribute('data-filter') === active;
+              b.setAttribute('aria-pressed', String(on));
+              b.classList.toggle('bg-brand', on);
+              b.classList.toggle('text-white', on);
+            });
+          };
+          const applyFilter = (filter) => {
+            const cards = Array.from(wrap.querySelectorAll('article[data-category]'));
+            cards.forEach(card => {
+              const cat = card.getAttribute('data-category');
+              card.style.display = (filter === 'all' || filter === cat) ? '' : 'none';
+            });
+          };
+          buttons.forEach(b => {
+            b.addEventListener('click', () => {
+              const filter = b.getAttribute('data-filter') || 'all';
+              setActive(filter);
+              applyFilter(filter);
+            });
+          });
+          // Ensure initial filter state applies (All)
+          applyFilter('all');
+        }
       }).catch(err => {
         console.error('Could not load publications.bib', err);
         wrap.innerHTML = `<p class="text-sm text-rose-600 dark:text-rose-400">Failed to load publications: ${escapeHTML(err.message)}</p>`;
