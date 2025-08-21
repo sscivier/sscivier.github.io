@@ -186,25 +186,7 @@
       </div>
     </div>
 
-    <!-- Inline data you can edit without touching JS -->
-    <script type="application/json" id="pubs-data">
-      [
-        {
-          "title": "Title of your paper",
-          "authors": "Surname, A., Scivier, S., et al.",
-          "venue": "Journal • Year",
-          "link": "https://doi.org/xxxx",
-          "notes": "Optional short note."
-        },
-        {
-          "title": "Another paper",
-          "authors": "Scivier, S., et al.",
-          "venue": "Conference • Year",
-          "link": "https://example.com",
-          "notes": ""
-        }
-      ]
-    </script>
+  <!-- Publications are loaded from /bib/publications.bib and rendered by JS -->
   </section>
 
   <!-- Software -->
@@ -298,26 +280,76 @@
     });
     // Year
     document.getElementById('y').textContent = new Date().getFullYear();
-    // Render publications from inline JSON
-    (function renderPubs(){
-      const dataEl = document.getElementById('pubs-data');
-      if (!dataEl) return;
-      try {
-        const pubs = JSON.parse(dataEl.textContent.trim());
-        const wrap = document.getElementById('pubs');
-        wrap.innerHTML = pubs.map(p => `
-          <article class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-            <a ${p.link ? `href="${p.link}"` : ''} class="block">
-              <h3 class="font-medium">${p.title || ''}</h3>
-            </a>
-            <div class="text-sm text-slate-600 dark:text-slate-300 mt-1">${p.authors || ''}</div>
-            <div class="text-sm text-slate-500 dark:text-slate-400">${p.venue || ''}</div>
-            ${p.notes ? `<p class='text-sm mt-2'>${p.notes}</p>` : ''}
+
+    // Publications: fetch, parse a minimal subset of BibTeX, and render styled cards.
+    (function renderFromBib(){
+      const wrap = document.getElementById('pubs');
+      if (!wrap) return;
+
+      const escapeHTML = (s = '') => s.replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c]));
+
+      const parseBib = (text = '') => {
+        const entries = [];
+        const entryRe = /@([a-zA-Z]+)\s*\{\s*([^,]+),([\s\S]*?)\n\}/g;
+        let m;
+        while ((m = entryRe.exec(text)) !== null) {
+          const type = m[1];
+          const key = m[2];
+          const body = m[3];
+          const fields = {};
+          const fieldRe = /([a-zA-Z0-9_\-]+)\s*=\s*(?:\{([\s\S]*?)\}|"([\s\S]*?)")\s*,?/g;
+          let f;
+          while ((f = fieldRe.exec(body)) !== null) {
+            const name = f[1].toLowerCase();
+            const val = (f[2] !== undefined ? f[2] : f[3] || '').replace(/\s+/g, ' ').trim();
+            fields[name] = val;
+          }
+          fields._type = type;
+          fields._key = key;
+          entries.push(fields);
+        }
+        return entries;
+      };
+
+      const renderCard = (p) => {
+        const year = p.year || '';
+        const title = p.title || '';
+        const authors = p.author || p.authors || '';
+        const venue = p.journal || p.booktitle || p.publisher || p.journal || '';
+        const doi = (p.doi || '').replace(/^(doi:\s*)/i,'');
+        const url = p.url || (doi ? `https://doi.org/${doi}` : '') || '';
+        const note = p.note || '';
+
+        return `
+          <article class="relative p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm hover:shadow-soft transition">
+            <div class="absolute top-4 right-4 text-xs text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-800 px-2 py-1 rounded-full">${escapeHTML(year)}</div>
+            <h3 class="font-semibold text-slate-900 dark:text-slate-100 leading-snug">
+              ${ url ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" class="hover:text-brand">${escapeHTML(title)}</a>` : escapeHTML(title) }
+            </h3>
+            <div class="mt-2 text-sm text-slate-600 dark:text-slate-300">${escapeHTML(authors)}</div>
+            <div class="mt-1 text-sm text-slate-500 dark:text-slate-400">${escapeHTML(venue)}</div>
+            ${ note ? `<p class='text-sm mt-3 text-slate-600 dark:text-slate-300'>${escapeHTML(note)}</p>` : '' }
           </article>
-        `).join('');
-      } catch (e) {
-        console.error('Failed to parse publications JSON', e);
-      }
+        `;
+      };
+
+      fetch('/bib/publications.bib', {cache: 'no-cache'}).then(r => {
+        if (!r.ok) throw new Error('Failed to fetch publications.bib');
+        return r.text();
+      }).then(text => {
+        const pubs = parseBib(text);
+        // derive numeric year for sorting where possible
+        pubs.forEach(p => { p._yearNum = parseInt((p.year||'').match(/\d{4}/)?.[0] || '0', 10) || 0; });
+        pubs.sort((a,b) => (b._yearNum - a._yearNum) || (a._key || '').localeCompare(b._key || ''));
+        if (pubs.length === 0) {
+          wrap.innerHTML = '<p class="text-sm text-slate-600 dark:text-slate-300">No publications found in <code>/bib/publications.bib</code>.</p>';
+          return;
+        }
+        wrap.innerHTML = pubs.map(renderCard).join('');
+      }).catch(err => {
+        console.error('Could not load publications.bib', err);
+        wrap.innerHTML = `<p class="text-sm text-rose-600 dark:text-rose-400">Failed to load publications: ${escapeHTML(err.message)}</p>`;
+      });
     })();
   </script>
 </body>
