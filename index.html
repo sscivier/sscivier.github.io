@@ -295,6 +295,27 @@
       window.location.href = 'mailto:' + user + '@' + domain;
     });
 
+    // Ensure links open in a new tab by default (skip in-page anchors)
+    (function enforceNewTabLinks(){
+      try {
+        document.querySelectorAll('a[href]').forEach(a => {
+          const href = a.getAttribute('href') || '';
+          // skip same-page anchors
+          if (href.startsWith('#')) return;
+          // allow explicit opt-out by data attribute
+          if (a.hasAttribute('data-same-tab')) return;
+          a.target = '_blank';
+          // preserve any existing rel values while ensuring noopener noreferrer
+          const rel = (a.getAttribute('rel') || '').split(/\s+/).filter(Boolean);
+          if (!rel.includes('noopener')) rel.push('noopener');
+          if (!rel.includes('noreferrer')) rel.push('noreferrer');
+          a.setAttribute('rel', rel.join(' '));
+        });
+      } catch (e) {
+        console.warn('Could not enforce new-tab links', e);
+      }
+    })();
+
   // Publications: fetch, parse BibTeX, convert LaTeX accents, format full author list, render cards with DOI/PDF icons, and filter by type.
     (function renderFromBib(){
       const wrap = document.getElementById('pubs');
