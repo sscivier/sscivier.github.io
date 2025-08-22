@@ -74,7 +74,7 @@
 <body class="font-sans antialiased text-slate-800 dark:text-slate-200 bg-[#fbf7ee] dark:bg-slate-900">
   <!-- Header -->
   <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-slate-900/70 border-b border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4">
+  <div class="max-w-6xl mx-auto px-4">
       <div class="flex items-center justify-between h-16">
         <a href="#home" class="flex items-center gap-3 group">
           <div class="h-9 w-9 rounded-2xl bg-brand/10 border border-slate-200 dark:border-slate-700 overflow-hidden group-hover:bg-brand/20 transition">
@@ -113,7 +113,7 @@
 
   <!-- Development Banner -->
   <div class="sticky top-16 z-30 bg-amber-50 dark:bg-amber-900/20 border-b border-amber-200 dark:border-amber-800/40">
-    <div class="max-w-6xl mx-auto px-4 py-2">
+  <div class="max-w-6xl mx-auto px-4 py-2">
       <div class="flex items-center justify-center gap-2 text-sm text-amber-800 dark:text-amber-200">
         <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
@@ -124,11 +124,14 @@
     </div>
   </div>
 
-  <!-- Hero -->
+  <!-- Hero (hybrid: full-bleed background, centered content) -->
   <section id="home" class="relative overflow-hidden">
-  <div class="absolute inset-0 bg-grid pointer-events-none" aria-hidden="true"></div>
-    <div class="max-w-6xl mx-auto px-4 pt-16 pb-20">
-      <div class="grid md:grid-cols-[3fr_2fr] gap-10 items-center">
+    <!-- full-bleed background layer -->
+    <div class="w-full">
+      <div class="absolute inset-0 bg-grid pointer-events-none" aria-hidden="true"></div>
+      <!-- centered content column inside the full-bleed area -->
+      <div class="max-w-6xl mx-auto px-4 pt-16 pb-20">
+        <div class="grid md:grid-cols-[3fr_2fr] gap-10 items-center">
         <div>
           <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight">
             Sam A. Scivier <span class="text-base sm:text-xl font-normal text-slate-600 dark:text-slate-300 ml-3">(he / him)</span>
@@ -156,12 +159,13 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- Research -->
   <section id="research" class="py-16 border-t border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-4xl">
+  <div class="max-w-5xl mx-auto px-4">
+      <div class="max-w-5xl">
         <h2 class="text-2xl font-semibold">Research</h2>
         <p class="mt-4 text-slate-600 dark:text-slate-300">...</p>
         <ul class="mt-6 grid sm:grid-cols-2 gap-4">
@@ -180,8 +184,8 @@
 
   <!-- Publications -->
   <section id="publications" class="py-16 border-t border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-4xl">
+  <div class="max-w-5xl mx-auto px-4">
+      <div class="max-w-5xl">
         <h2 class="text-2xl font-semibold">Selected Publications</h2>
 
         <!-- Filter buttons -->
@@ -205,8 +209,8 @@
 
   <!-- Software -->
   <section id="software" class="py-16 border-t border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-5xl">
+  <div class="max-w-5xl mx-auto px-4">
+  <div class="max-w-full">
         <div class="flex items-center justify-between gap-4">
           <h2 class="text-2xl font-semibold">Open‑Source Software</h2>
           <a href="https://github.com/sscivier" class="text-sm underline hover:text-brand">See more @sscivier on GitHub →</a>
@@ -222,8 +226,8 @@
 
   <!-- Teaching -->
   <section id="teaching" class="py-16 border-t border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-3xl">
+  <div class="max-w-5xl mx-auto px-4">
+      <div class="max-w-5xl">
         <h2 class="text-2xl font-semibold">Teaching & Outreach</h2>
         <ul class="mt-6 space-y-3">
           <li class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50">
@@ -241,7 +245,7 @@
 
   <!-- Contact -->
   <section id="contact" class="py-16 border-t border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4">
+  <div class="max-w-5xl mx-auto px-4">
       <div class="grid md:grid-cols-2 gap-10 items-start">
         <div>
           <h2 class="text-2xl font-semibold">Contact</h2>
@@ -264,7 +268,7 @@
   </section>
 
   <footer class="py-10 border-t border-slate-200/60 dark:border-slate-800/60">
-    <div class="max-w-6xl mx-auto px-4 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-between gap-2">
+  <div class="max-w-6xl mx-auto px-4 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-between gap-2">
       <p>© <span id="y"></span> Sam A. Scivier</p>
       <div class="flex items-center gap-4">
         <a class="underline hover:text-brand" href="/cv.pdf">CV</a>
