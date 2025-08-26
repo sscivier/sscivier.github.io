@@ -1,0 +1,251 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{fontawesome}
+\usepackage{microtype}
+
+% Color scheme
+\definecolor{darkblue}{RGB}{25,25,112}
+\definecolor{linkcolor}{RGB}{14,165,233}
+
+% Hyperref setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkcolor,
+    urlcolor=linkcolor,
+    citecolor=linkcolor,
+    pdfauthor={Sam A. Scivier},
+    pdftitle={Sam A. Scivier - Curriculum Vitae},
+    pdfsubject={Curriculum Vitae},
+    pdfkeywords={geophysics, machine learning, uncertainty quantification, earthquake prediction}
+}
+
+% Custom section formatting
+\titleformat{\section}
+{\Large\bfseries\color{darkblue}}
+{\thesection}{0em}{}[\titlerule]
+
+\titleformat{\subsection}
+{\large\bfseries}
+{\thesubsection}{0em}{}
+
+% Custom list formatting
+\setlist[itemize]{leftmargin=*,nosep,before=\vspace{-0.5\baselineskip},after=\vspace{0.5\baselineskip}}
+\setlist[enumerate]{leftmargin=*,nosep}
+
+% Fix spacing for cventry items
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% Remove page numbers
+\pagestyle{empty}
+
+% Custom commands
+\newcommand{\cventry}[4]{%
+    \noindent\textbf{#1} \hfill #2\\
+    \textit{#3} \hfill #4\\[0.1em]
+}
+
+\newcommand{\publication}[1]{%
+    \item #1
+}
+
+\begin{document}
+
+% Header
+\begin{center}
+    {\Huge\bfseries Sam A. Scivier}\\[0.3em]
+    \textit{British \& Canadian Citizen}\\[0.3em]
+    Department of Earth Sciences, University of Oxford\\
+    South Parks Road, Oxford, OX3 1AN, UK\\[0.8em]
+    
+    \begin{tabular}{c c c}
+        \faEnvelope\ \href{mailto:sam.scivier@earth.ox.ac.uk}{sam.scivier@earth.ox.ac.uk} &
+        \faGlobe\ \href{https://sscivier.github.io}{sscivier.github.io} &
+        \faLinkedin\ \href{https://www.linkedin.com/in/samscivier/}{samscivier} \\
+        \faGithub\ \href{https://github.com/sscivier}{sscivier} &
+        \faGraduationCap\ \href{https://scholar.google.com/citations?user=aAvhqzIAAAAJ}{Google Scholar} &
+        \faUniversity\ \href{https://www.earth.ox.ac.uk/people/sam-scivier}{Oxford Profile}
+    \end{tabular}
+\end{center}
+
+\vspace{0.5em}
+
+% Professional Summary
+\section*{Professional Summary}
+
+I am a PhD student in the Department of Earth Sciences at the University of Oxford, developing probabilistic methods for uncertainty quantification in geophysics. I hold a Master's in Physics from the University of Birmingham and have gained industry experience through internships in quantum computing at D-Wave Systems (Canada) and Riverlane (UK). My research focuses on Gaussian process-based approaches for probabilistic fusion of geospatial datasets, with applications to earthquake ground motion prediction and seismic hazard assessment. I am interested in applying physics-based computational, data science, and machine learning methods to tackle challenges across geoscience, aerospace, sustainability, and emerging technologies, with a particular focus on research opportunities that combine rigorous scientific methodology with practical applications having tangible societal impact.
+
+% Education
+\section*{Education}
+
+\cventry{PhD in Earth Sciences}{October 2022 -- present}{University of Oxford, England}{Expected 2026}
+\begin{itemize}
+    \item Funding: Oxford-NERC DTP in Environmental Research (Full studentship $\sim$£120k)
+    \item Research: Developing probabilistic methods for uncertainty quantification in physics-based seismic hazard assessment
+    \item Focus: Gaussian process-based approaches for probabilistic fusion of overlapping geospatial datasets
+\end{itemize}
+
+\cventry{MSci Physics (First Class Honours)}{October 2018 -- July 2022}{University of Birmingham, England}{}
+\begin{itemize}
+    \item Specialized coursework in theoretical and quantum physics, radar and imaging techniques
+    \item Final year project: Machine learning algorithms for early identification of massive black hole binary mergers for LISA mission
+    \item Third year project: Bayesian inference for parameter estimation of binary black hole mergers
+\end{itemize}
+
+\cventry{British Columbia High School Diploma}{September 2014 -- June 2018}{Prince of Wales Secondary School, Vancouver, Canada}{}
+\begin{itemize}
+    \item Graduated as highest GPA student with A grades in all Grade 12 subjects
+    \item Top scholar for Grades 10, 11, and 12
+\end{itemize}
+
+% Research Experience
+\section*{Research Experience}
+
+\cventry{PhD Researcher}{October 2022 -- present}{Department of Earth Sciences, University of Oxford}{}
+\begin{itemize}
+    \item Developing probabilistic methods for uncertainty quantification in physics-based seismic hazard assessment
+    \item Creating Gaussian process-based approaches for probabilistic fusion of overlapping geospatial datasets
+    \item Building collaborations to extend methods to other geophysical problems
+    \item Developing open-source software to make methods broadly accessible across geosciences
+\end{itemize}
+
+\cventry{Quantum Science Intern}{June -- August 2021}{Riverlane, Cambridge, UK}{}
+\begin{itemize}
+    \item Focused on improving resource efficiency in quantum computation
+    \item Developed software for quantum computers using Python extensively
+    \item Worked in multidisciplinary team of physicists, mathematicians, and software engineers
+    \item Delivered algorithm implementation and research presentation
+\end{itemize}
+
+\cventry{Quantum Research Intern}{June -- August 2019}{D-Wave Systems Inc., Burnaby, Canada}{}
+\begin{itemize}
+    \item Conducted theoretical research in quantum technology and applications
+    \item Used MATLAB for simulations of nonstoquastic quantum processing and analysis
+    \item Designed optimization protocol for nonstoquastic quantum annealing
+    \item Co-authored paper published in Physical Review A (2021)
+\end{itemize}
+
+\cventry{Student Science Mentorship Programme Researcher}{March -- April 2016}{DPoint Technologies Inc., Vancouver, Canada}{}
+\begin{itemize}
+    \item Worked part-time in commercial research laboratory during high school
+    \item Prepared membrane samples and conducted testing using analytical equipment
+    \item Assessed results for commercial energy recovery ventilation applications
+\end{itemize}
+
+% Publications
+\section*{Publications}
+
+\begin{enumerate}
+\publication{\textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{arXiv:2412.03299 [physics.geo-ph]} (2024). \href{https://doi.org/10.48550/arXiv.2412.03299}{DOI: 10.48550/arXiv.2412.03299}. Peer-reviewed and presented at ML4PS Workshop at NeurIPS 2024.}
+
+\publication{N.S. Blunt, J. Camps, O. Crawford, R. Izsák, S. Leontica, A. Mirani, A.E. Moylett, \textbf{S.A. Scivier}, C. Sunderhauf, P. Schopf, et al., ``Perspective on the current state-of-the-art of quantum computing for drug discovery applications,'' \textit{Journal of Chemical Theory and Computation} \textbf{18}, 7001-7023 (2022). \href{https://doi.org/10.1021/acs.jctc.2c00574}{DOI: 10.1021/acs.jctc.2c00574}}
+
+\publication{E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Physical Review A} \textbf{104}, 012619 (2021). \href{https://doi.org/10.1103/PhysRevA.104.012619}{DOI: 10.1103/PhysRevA.104.012619}}
+\end{enumerate}
+
+% Teaching and Outreach
+\section*{Teaching \& Outreach}
+
+\cventry{Gaussian Processes for Probabilistic Earthquake Ground Motion Prediction}{November 2024}{Workshop Leader, Oxford Intelligent Earth CDT}{}
+\begin{itemize}
+    \item Led workshop for first-year PhD students on probabilistic fusion of seismic velocity models using Gaussian Processes
+    \item Created open-source Jupyter notebook with interactive examples demonstrating data fusion and uncertainty quantification
+    \item Designed progressive exercises covering engineering safety assessment and computational optimization
+    \item Materials available at: \href{https://github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}{github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}
+\end{itemize}
+
+% Work Experience
+\section*{Non-Technical Professional Experience}
+
+\cventry{Assistant Programme Coordinator}{June -- August 2020}{Squash British Columbia, Vancouver, Canada}{}
+\begin{itemize}
+    \item Collaborated with Executive Director to design Squash BC's COVID-19 pandemic response
+    \item Managed communications to member facilities through website, newsletters, and online meetings
+    \item Organized virtual panel discussion on university opportunities for competitive junior players
+\end{itemize}
+
+\cventry{Part-Time Assistant Squash Professional}{June 2016 -- September 2018}{Jericho Tennis Club, Vancouver, Canada}{}
+\begin{itemize}
+    \item Coached junior and adult squash players in private and group lessons
+    \item Created positive sports environment and served as role model for junior players
+\end{itemize}
+
+% Awards and Recognition
+\section*{Awards \& Recognition}
+
+\begin{itemize}
+    \item IAGA/IASPEI 2025 Travel Grant -- Free registration (€290 value) (2025)
+    \item British Seismology Meeting 2024 -- Best Student Poster Prize (2024)
+    \item University of Birmingham School of Physics and Astronomy SWJ Smith Prize -- Highest M.Sci. Physics graduate (2022)
+    \item University of Birmingham Physics Sports Scholarship (2019-2022)
+    \item Canadian Governor General's Academic Medal -- Highest GPA graduate (2018)
+    \item British Columbia Academic Achievement Scholarship (2018)
+    \item University of Birmingham School of Physics and Astronomy Academic Achievement Scholarship (2018/19)
+    \item SFU Applied Sciences Math 11 Award, Simon Fraser University (2017)
+\end{itemize}
+
+% Technical Skills
+\section*{Technical Skills}
+
+\textbf{Programming:} Python (7+ years), MATLAB, Bash, HTML, Java\\
+\textbf{Machine Learning \& Data Science:} TensorFlow, PyTorch, Weights \& Biases, Gaussian Processes, Bayesian inference\\
+\textbf{Geophysical Modeling:} Finite difference methods, seismic wave propagation, velocity model analysis\\
+\textbf{Software \& Tools:} GitHub/GitLab, LaTeX, VSCode, Microsoft Office\\
+\textbf{Research Methods:} Probabilistic methods, statistical analysis, scientific computing, open-source development
+
+% Conferences and Presentations
+\section*{Conferences \& Presentations}
+
+\subsection*{Invited Talks}
+\begin{itemize}
+    \item ``Towards physics-based probabilistic estimates of earthquake ground motion using Gaussian processes'' -- University of Exeter (November 2024)
+\end{itemize}
+
+\subsection*{Conference Presentations}
+\begin{itemize}
+    \item IAGA/IASPEI Joint Scientific Assembly 2025, Lisbon, Portugal (Oral presentation, September 2025)
+    \item ML4PS Workshop at NeurIPS 2024, Vancouver, Canada (Poster, December 2024)
+    \item NERC DTP Student Conference 2024, Oxford, UK (Poster, June 2024)
+    \item British Seismology Meeting 2024, Reading, UK (Poster -- \textit{Best Student Poster Prize}, March 2024)
+\end{itemize}
+
+\subsection*{Professional Development}
+\begin{itemize}
+    \item SPIN Short Course 3: ``Interrogating the Restless Earth'' -- SPIN ITN, Scotland (March 2023)
+\end{itemize}
+
+% Languages
+\section*{Languages}
+
+\textbf{English:} Native proficiency \quad \textbf{French:} Professional working proficiency \quad \textbf{Romanian:} Basic proficiency
+
+% Extracurricular Activities
+\section*{Extracurricular Activities}
+
+\subsection*{Competitive Squash}
+\begin{itemize}
+    \item Silver medal, 2019 Canada Winter Games; Gold medal, 2022 BUCS Squash Team Championships
+    \item 1st team player, University of Birmingham (2018-2022)
+    \item President, University of Birmingham Squash Club (2019-2020)
+    \item Sport Colours Award for outstanding contribution (2020)
+\end{itemize}
+
+\subsection*{Other Interests}
+Skiing, hiking, road/mountain biking, bouldering/climbing, photography
+
+% Professional Memberships
+\section*{Professional Memberships}
+
+\begin{itemize}
+    \item Fellow of the Royal Astronomical Society (elected February 14, 2025)
+    \item Institute of Physics Member (Studying) (2018 -- present)
+\end{itemize}
+
+\end{document}
