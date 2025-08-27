@@ -12,8 +12,8 @@
 \usepackage{etaremune}
 
 % Color scheme
-\definecolor{darkblue}{RGB}{25,25,112}
-\definecolor{linkcolor}{RGB}{14,165,233}
+\definecolor{linkcolor}{RGB}{25,25,112}
+% \definecolor{linkcolor}{RGB}{14,165,233}
 
 % Hyperref setup
 \hypersetup{
@@ -63,6 +63,19 @@
     \if\relax\detokenize{#7}\relax\else {\small Funding: #7}\\\fi
     \if\relax\detokenize{#8}\relax\else {\small Advisor(s): #8}\\\fi
     \if\relax\detokenize{#9}\relax\else{\small #9}\\\fi
+    \end{minipage}\par
+    \vspace{0.5em}
+}
+
+% Teaching entry command
+% Usage: \teachentry{role}{date}{course title}{institution}{location}{description (opt)}
+\newcommand{\teachentry}[6]{%
+    \par\noindent\hspace{1.5em}%
+    \begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+    \textbf{\textit{#1}} \hfill #2\\
+    \textbf{#3}\\
+    \textbf{#4}, \textit{#5}\\
+    \if\relax\detokenize{#6}\relax\else{\small #6}\\\fi
     \end{minipage}\par
     \vspace{0.5em}
 }
@@ -157,8 +170,13 @@ Analyzed results and their implications for commercial applications.
 
 % Teaching & Outreach - cv-1 compact style
 \section*{Teaching \& Outreach}
-\cventry{Workshop Leader}{November 2024}{Oxford Intelligent Earth CDT}{}
-Gaussian Processes for Probabilistic Earthquake Ground Motion Prediction. Created open-source materials.
+
+\teachentry{Workshop Leader}{11/2024}{Gaussian Processes for Probabilistic Earthquake Ground Motion Prediction}{Oxford Intelligent Earth CDT, University of Oxford}{Oxford, UK}{%
+Led workshop for first-year PhD students on probabilistic fusion of seismic velocity models using Gaussian Processes, with application to seismic hazard.
+Created open-source Jupyter notebook with interactive examples demonstrating data fusion and uncertainty quantification. 
+Designed progressive exercises covering engineering safety assessment and computational optimization. 
+Materials available at: \href{https://github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}{github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}.
+}
 
 % Professional Experience - cv-1 compact style
 \section*{Professional Experience}
