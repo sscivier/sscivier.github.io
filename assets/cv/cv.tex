@@ -110,6 +110,20 @@
     \vspace{0.5em}
 }
 
+% Talk entry command
+% Usage: \talkentry{title}{date}{event}{location}{description (opt)}
+\newcommand{\talkentry}[5]{%
+    \par\noindent\hspace{1.5em}%
+    \begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+    \textbf{\textit{#1}} \hfill #2\\
+    \textbf{#3}, \textit{#4}\\
+    \if\relax\detokenize{#5}\relax\else{\small #5}\\\fi
+    \end{minipage}\par
+    \vspace{0.5em}
+}
+
+
+% 
 \begin{document}
 
 % Suppress header on first page
@@ -233,6 +247,11 @@ Created a positive and inclusive sports environment, and served as a role model 
 \end{minipage}\par
 \vspace{0.5em}
 
+\section*{Invited Talks}
+\talkentry{Towards physics-based probabilistic estimates of earthquake ground motion using Gaussian processes}{11/2024}{Mathematics and Statistics Seminar Series, University of Exeter}{Exeter, UK}{Seminar on developing probabilistic methods for incorporating uncertainties from seismic velocity model inconsistencies in earthquake ground motion prediction using Gaussian process regression.}
+
+\section*{Conference Presentations}
+
 % Conferences - cv-1 compact style
 \section*{Selected Conferences \& Presentations}
 \cventry{Invited Talk}{November 2024}{University of Exeter}{Gaussian process methods for ground motion prediction}
@@ -247,16 +266,29 @@ Created a positive and inclusive sports environment, and served as a role model 
 
 % Languages - cv-1 compact style
 \section*{Languages}
+\par\noindent\hspace{1.5em}%
+\begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
 English (Native) $\bullet$ French (Professional) $\bullet$ Romanian (Basic)
+\end{minipage}\par
+\vspace{0.5em}
 
 % Extracurricular - cv-1 compact style
 \section*{Extracurricular Activities}
-\textbf{Competitive Squash:} Silver medal (2019 Canada Winter Games), Gold medal (2022 BUCS Championships), University of Birmingham President (2019-2020) \\
-\textbf{Other Interests:} Skiing, hiking, cycling, climbing, photography
+\par\noindent\hspace{1.5em}%
+\begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+\textbf{Competitive Squash:} Gold medal (2022 BUCS Team Championships); Silver Medal (2019 BUCS Team Championships); Silver medal (2019 Canada Winter Games); University of Birmingham Squash Club -- President (2019-2020), Media Secretary (2020-2021), Welfare Secretary (2021-2022) \\
+
+\noindent\textbf{Other Interests:} Skiing, hiking, cycling, climbing, photography
+\end{minipage}\par
+\vspace{0.5em}
 
 % Memberships - cv-1 compact style
 \section*{Professional Memberships}
-Fellow of the Royal Astronomical Society (2025) $\bullet$ Institute of Physics Member (2018--present)
+\par\noindent\hspace{1.5em}%
+\begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+Fellow of the Royal Astronomical Society (Elected 02/2025) $\bullet$ Institute of Physics Member (2018--Present)
+\end{minipage}\par
+\vspace{0.5em}
 
 \label{LastPage}
 \end{document}
