@@ -10,6 +10,7 @@
 \usepackage{fontawesome}
 \usepackage{microtype}
 \usepackage{etaremune}
+\usepackage{fancyhdr}
 
 % Color scheme
 \definecolor{linkcolor}{RGB}{25,25,112}
@@ -45,8 +46,13 @@
 \setlist[itemize]{leftmargin=1.5em, topsep=0pt, itemsep=2pt}
 \setlist[enumerate]{leftmargin=1.5em, topsep=0pt, itemsep=2pt}
 
-% Remove page numbers
-\pagestyle{empty}
+% Page style with headers
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyhead[L]{Sam A. Scivier}
+\fancyhead[R]{Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14.5pt}
 
 % Compact entry command
 \newcommand{\cventry}[4]{%
@@ -92,7 +98,22 @@
     \vspace{0.5em}
 }
 
+% Award entry command
+% Usage: \awentry{award}{issued by}{date}{description (opt)}
+\newcommand{\awentry}[4]{%
+    \par\noindent\hspace{1.5em}%
+    \begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+    \textbf{\textit{#1}} \hfill #3\\
+    \textbf{#2} \\
+    \if\relax\detokenize{#4}\relax\else{\small #4}\\\fi
+    \end{minipage}\par
+    \vspace{0.5em}
+}
+
 \begin{document}
+
+% Suppress header on first page
+\thispagestyle{empty}
 
 % Header
 \begin{center}
@@ -178,25 +199,39 @@ Designed progressive exercises covering engineering safety assessment and comput
 Materials available at: \href{https://github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}{github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}.
 }
 
-% Professional Experience - cv-1 compact style
-\section*{Professional Experience}
-\cventry{Assistant Programme Coordinator}{June -- August 2020}{Squash British Columbia, Vancouver}{}
-COVID-19 pandemic response design. Communications management and virtual event organization.
+% Non-Technical Professional Experience
+\section*{Non-Technical Professional Experience}
 
-\cventry{Assistant Squash Professional}{June 2016 -- September 2018}{Jericho Tennis Club, Vancouver}{}
-Junior and adult coaching. Positive sports environment development.
+\resentry{Assistant Programme Coordinator}{06/2020 -- 08/2020}{Squash British Columbia}{Vancouver, Canada}{%
+Worked with the Executive Director to design, coordinate, and communicate Squash BC’s response to the COVID-19 pandemic. 
+Organized and executed a panel discussion on university opportunities and experiences for an audience of competitive junior squash players.
+}
+
+\resentry{Assistant Squash Professional}{06/2016 -- 09/2018}{Jericho Tennis Club}{Vancouver, Canada}{%
+Worked with junior and adult players to improve their squash game through tailored (private and group) coaching sessions.
+Created a positive and inclusive sports environment, and served as a role model for junior squash players.
+}
 
 % Awards - cv-1 compact style
 \section*{Awards \& Recognition}
-IAGA/IASPEI Travel Grant (2025) $\bullet$ British Seismology Best Student Poster (2024) $\bullet$ SWJ Smith Prize - Highest M.Sci. Physics Graduate (2022) $\bullet$ Physics Sports Scholarship (2019-2022) $\bullet$ Governor General's Academic Medal (2018) $\bullet$ BC Academic Achievement Scholarship (2018)
+\awentry{IAGA/IASPEI Travel Grant}{IAGA/IASPEI Joint Scientific Meeting}{09/2025}{Waived registration fee to attend the IAGA/IASPEI Joint Scientific Meeting in Lisbon, Portugal, for presenting my work on probabilistic fusion of seismic velocity models using Gaussian Processes. (Value €290)}
+\awentry{Best Student Poster -- British Seismology Meeting}{International Seismological Centre}{03/2024}{Awarded for my poster presentation at the British Seismology Meeting in Reading, UK. (Value \pounds100)}
+\awentry{SWJ Smith Prize}{School of Physics and Astronomy, University of Birmingham}{07/2022}{Awarded to the M.Sci. Physics student graduating with the highest overall mark. (Value \pounds500)}
+\awentry{Physics Sports Bursary}{School of Physics and Astronomy, University of Birmingham}{2019 -- 2022}{Awarded for combined academic and athletic achievement. (Value \pounds800/year)}
+\awentry{Academic Achievement Scholarship}{School of Physics and Astronomy, University of Birmingham}{01/2019}{}
+\awentry{Governor General's Academic Medal}{Government of Canada}{06/2018}{The most prestigious award that students in Canadian schools can receive. Awarded to the student graduating with the highest GPA from a high school.}
 
 % Technical Skills - cv-1 compact style
 \section*{Technical Skills}
-\textbf{Programming:} Python (7+ years), MATLAB, Bash, HTML \\
+\par\noindent\hspace{1.5em}%
+\begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+\textbf{Programming:} Python (7+ years), Git, MATLAB, Bash, HTML \\
 \textbf{ML \& Data Science:} TensorFlow, PyTorch, Gaussian Processes, Bayesian inference \\
 \textbf{Geophysics:} Finite difference methods, seismic wave propagation, geospatial data \\
 \textbf{Tools:} GitHub/GitLab, LaTeX, VSCode \\
-\textbf{Methods:} Probabilistic methods, numerical methods, open-source development
+\textbf{Methods:} Probabilistic methods, machine learning, numerical methods, open-source development
+\end{minipage}\par
+\vspace{0.5em}
 
 % Conferences - cv-1 compact style
 \section*{Selected Conferences \& Presentations}
@@ -223,4 +258,5 @@ English (Native) $\bullet$ French (Professional) $\bullet$ Romanian (Basic)
 \section*{Professional Memberships}
 Fellow of the Royal Astronomical Society (2025) $\bullet$ Institute of Physics Member (2018--present)
 
+\label{LastPage}
 \end{document}

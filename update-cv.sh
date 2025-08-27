@@ -50,9 +50,27 @@ cd "$(dirname "$0")/assets/cv"
 # Compile the LaTeX CV to PDF
 pdflatex cv.tex
 
-# Check if compilation was successful
+# Check if first compilation was successful
 if [ $? -eq 0 ]; then
-    echo "✅ LaTeX compilation successful"
+    echo "✅ First LaTeX compilation successful"
+    
+    # Run pdflatex again to resolve cross-references (like page numbers)
+    pdflatex cv.tex
+    
+    if [ $? -eq 0 ]; then
+        echo "✅ Second LaTeX compilation successful"
+    else
+        echo "❌ Second LaTeX compilation failed"
+        exit 1
+    fi
+else
+    echo "❌ First LaTeX compilation failed"
+    exit 1
+fi
+
+# Check if final compilation was successful
+if [ -f "cv.pdf" ]; then
+    echo "✅ LaTeX compilation complete"
     
     # Copy PDF to website root
     cp cv.pdf ../../cv.pdf
@@ -65,7 +83,7 @@ if [ $? -eq 0 ]; then
         exit 1
     fi
 else
-    echo "❌ LaTeX compilation failed"
+    echo "❌ LaTeX compilation failed - no PDF generated"
     exit 1
 fi
 
