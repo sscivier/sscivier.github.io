@@ -26,35 +26,46 @@
     pdfkeywords={geophysics, machine learning, uncertainty quantification, earthquake prediction}
 }
 
-% Custom section formatting
+% Section formatting 
 \titleformat{\section}
-{\Large\bfseries\color{darkblue}}
-{\thesection}{0em}{}[\titlerule]
+{\large\bfseries}
+{}{0pt}{\MakeUppercase}
 
 \titleformat{\subsection}
-{\large\bfseries}
-{\thesubsection}{0em}{}
+{\normalsize\bfseries}
+{}{0pt}{}
 
-% Custom list formatting
-\setlist[itemize]{leftmargin=*,nosep,before=\vspace{-0.5\baselineskip},after=\vspace{0.5\baselineskip}}
-\setlist[enumerate]{leftmargin=*,nosep}
+% Professional summary formatting - narrower margins and slightly smaller font
+\newenvironment{summary}
+  {\begin{quote}\small}
+  {\end{quote}}
 
-% Fix spacing for cventry items
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0pt}
+% Compact list formatting
+\setlist[itemize]{leftmargin=1.5em, topsep=0pt, itemsep=2pt}
+\setlist[enumerate]{leftmargin=1.5em, topsep=0pt, itemsep=2pt}
 
 % Remove page numbers
 \pagestyle{empty}
 
-% Custom commands
+% Compact entry command
 \newcommand{\cventry}[4]{%
     \noindent\textbf{#1} \hfill #2\\
-    \textit{#3} \hfill #4\\[0.1em]
+    \textit{#3} \hfill #4\\[0.3em]
+}
+% Education entry command
+% Usage: \eduentry{degree}{subject}{institution}{location}{date}{expected date (opt)}{funding (opt)}{supervisors (opt)}{description (opt)}
+\newcommand{\eduentry}[9]{%
+    \par\noindent\hspace{1.5em}%
+    \begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+    \textbf{\textit{#1}}, \textbf{#2} \hfill #5\\
+    \textbf{#3}, \textit{#4} \hfill #6\\
+    \if\relax\detokenize{#7}\relax\else {\small Funding: #7}\\\fi
+    \if\relax\detokenize{#8}\relax\else {\small Advisor(s): #8}\\\fi
+    \if\relax\detokenize{#9}\relax\else{\small #9}\\\fi
+    \end{minipage}\par
+    \vspace{0.5em}
 }
 
-\newcommand{\publication}[1]{%
-    \item #1
-}
 
 \begin{document}
 
@@ -77,192 +88,96 @@
 
 \vspace{0.5em}
 
-% Professional Summary
+% Professional Summary - cv-1 compact style
 \section*{Professional Summary}
+\begin{summary}
+I am a PhD student in the Department of Earth Sciences at the University of Oxford, developing probabilistic methods for uncertainty quantification in geophysics. 
+I hold a Master’s in Physics from the University of Birmingham and have gained industry experience through internships in quantum computing at D-Wave Systems (Canada) and Riverlane (UK). 
+My research focuses on Gaussian process-based approaches for probabilistic fusion of geospatial datasets, with applications to earthquake ground motion prediction and seismic hazard assessment. 
+I am interested in applying physics-based computational, data science, and machine learning methods to tackle challenges across geoscience, aerospace, sustainability, and emerging technologies, with a particular focus on research opportunities that combine rigorous scientific methodology with practical applications having tangible societal impact.
+\end{summary}
 
-I am a PhD student in the Department of Earth Sciences at the University of Oxford, developing probabilistic methods for uncertainty quantification in geophysics. I hold a Master's in Physics from the University of Birmingham and have gained industry experience through internships in quantum computing at D-Wave Systems (Canada) and Riverlane (UK). My research focuses on Gaussian process-based approaches for probabilistic fusion of geospatial datasets, with applications to earthquake ground motion prediction and seismic hazard assessment. I am interested in applying physics-based computational, data science, and machine learning methods to tackle challenges across geoscience, aerospace, sustainability, and emerging technologies, with a particular focus on research opportunities that combine rigorous scientific methodology with practical applications having tangible societal impact.
-
-% Education
+% Education - cv-1 compact style
 \section*{Education}
 
-\cventry{PhD in Earth Sciences}{October 2022 -- present}{University of Oxford, England}{Expected 2026}
-\begin{itemize}
-    \item Funding: Oxford-NERC DTP in Environmental Research (Full studentship $\sim$£120k)
-    \item Research: Developing probabilistic methods for uncertainty quantification in physics-based seismic hazard assessment
-    \item Focus: Gaussian process-based approaches for probabilistic fusion of overlapping geospatial datasets
-\end{itemize}
+\eduentry{Ph.D.}{Geophysics}{University of Oxford}{Oxford, UK}{10/2022 -- Present}{Expected 2026}{Oxford-NERC DTP in Environmental Research (Full studentship $\sim$ \pounds 120k)}{Paula Koelemeijer, Tarje Nissen-Meyer, Atılım Güneş Baydin}{Gaussian processes for the probabilistic fusion of geophysical datasets -- with application to seismic hazard assessment.}
 
-\cventry{M.Sci. Physics (First Class Honours)}{October 2018 -- July 2022}{University of Birmingham, England}{}
-\begin{itemize}
-    \item Specialized coursework in theoretical and quantum physics, radar and imaging techniques
-    \item Final year project: Machine learning algorithms for early identification of massive black hole binary mergers for LISA mission (ESA; launch 2035)
-    \item Third year project: Bayesian inference for parameter estimation of binary black hole mergers
-\end{itemize}
+\eduentry{M.Sci.}{Physics (First Class Honours)}{University of Birmingham}{Birmingham, UK}{10/2018 -- 07/2022}{}{}{Alberto Vecchio}{Specialized coursework in theoretical and quantum physics, radar and imaging techniques. \\Final project: Machine learning algorithms for early identification of massive black hole binary mergers for LISA mission (ESA; launch 2035). \\Third year project: Bayesian inference for parameter estimation of binary black hole mergers in LIGO experiment.}
 
-\cventry{British Columbia High School Diploma}{September 2013 -- June 2018}{Prince of Wales Secondary School, Vancouver, Canada}{}
-\begin{itemize}
-    \item Graduated as highest GPA student with A grades in all Grade 12 subjects
-    \item Top scholar for Grades 10, 11, and 12
-\end{itemize}
+\eduentry{High School Diploma}{British Columbia}{Prince of Wales Secondary School}{Vancouver, Canada}{09/2013 -- 06/2018}{}{}{}{Graduated as highest GPA student. Top scholar for Grades 10, 11, and 12.}
 
-% Research Experience
+% Research Experience - cv-1 compact style
 \section*{Research Experience}
-
 \cventry{PhD Researcher}{October 2022 -- present}{Department of Earth Sciences, University of Oxford}{}
-\begin{itemize}
-    \item Working on probabilistic methods for uncertainty quantification in physics-based seismic hazard assessment
-    \item Developed Gaussian process-based approaches for probabilistic fusion of overlapping geospatial datasets
-    \item Building collaborations to extend methods to other geophysical problems
-    \item Developing open-source software to make methods broadly accessible across geosciences
-\end{itemize}
+Probabilistic methods for uncertainty quantification in physics-based seismic hazard assessment. Gaussian process approaches for geospatial data fusion. Open-source software development.
 
 \cventry{Quantum Science Intern}{June -- August 2021}{Riverlane, Cambridge, UK}{}
-\begin{itemize}
-    \item Focused on improving resource efficiency in quantum computation
-    \item Developed software for quantum computers using Python
-    \item Worked in multidisciplinary team of physicists, chemists, mathematicians, and software engineers
-    \item Delivered algorithm implementation and research presentation
-\end{itemize}
+Resource efficiency in quantum computation. Python software development for quantum computers.
 
 \cventry{Quantum Research Intern}{June -- August 2019}{D-Wave Systems Inc., Burnaby, Canada}{}
-\begin{itemize}
-    \item Conducted theoretical research in quantum technology and applications
-    \item Used MATLAB for simulations of nonstoquastic quantum processing and analysis
-    \item Designed optimization protocol for nonstoquastic quantum annealing
-    \item Co-authored paper published in Physical Review A (2021)
-\end{itemize}
+Theoretical research in quantum technology. MATLAB simulations of nonstoquastic quantum processing. Co-authored Physical Review A paper (2021).
 
-\cventry{Student Science Mentorship Programme Researcher}{March -- April 2016}{DPoint Technologies Inc., Vancouver, Canada}{}
-\begin{itemize}
-    \item Worked part-time in commercial research laboratory during high school
-    \item Prepared membrane samples and conducted testing using analytical equipment
-    \item Assessed results for commercial energy recovery ventilation applications
-\end{itemize}
+\cventry{Student Science Mentorship}{March -- April 2016}{DPoint Technologies Inc., Vancouver}{}
+Membrane sample preparation and testing for energy recovery applications.
 
-% Publications
+% Publications - cv-1 compact style
 \section*{Publications}
-
 \begin{enumerate}
-\publication{\textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{arXiv:2412.03299 [physics.geo-ph]} (2024). \href{https://doi.org/10.48550/arXiv.2412.03299}{DOI: 10.48550/arXiv.2412.03299}. Peer-reviewed and presented at ML4PS Workshop at NeurIPS 2024.}
+\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{arXiv:2412.03299} (2024).
 
-\publication{N.S. Blunt, J. Camps, O. Crawford, R. Izsák, S. Leontica, A. Mirani, A.E. Moylett, \textbf{S.A. Scivier}, C. Sunderhauf, P. Schopf, et al., ``Perspective on the current state-of-the-art of quantum computing for drug discovery applications,'' \textit{Journal of Chemical Theory and Computation} \textbf{18}, 7001-7023 (2022). \href{https://doi.org/10.1021/acs.jctc.2c00574}{DOI: 10.1021/acs.jctc.2c00574}}
+\item N.S. Blunt, J. Camps, O. Crawford, R. Izsák, S. Leontica, A. Mirani, A.E. Moylett, \textbf{S.A. Scivier}, et al., ``Perspective on quantum computing for drug discovery,'' \textit{J. Chem. Theory Comput.} \textbf{18}, 7001-7023 (2022).
 
-\publication{E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Physical Review A} \textbf{104}, 012619 (2021). \href{https://doi.org/10.1103/PhysRevA.104.012619}{DOI: 10.1103/PhysRevA.104.012619}}
+\item E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Phys. Rev. A} \textbf{104}, 012619 (2021).
 \end{enumerate}
 
-% Teaching and Outreach
+% Teaching & Outreach - cv-1 compact style
 \section*{Teaching \& Outreach}
+\cventry{Workshop Leader}{November 2024}{Oxford Intelligent Earth CDT}{}
+Gaussian Processes for Probabilistic Earthquake Ground Motion Prediction. Created open-source materials.
 
-\cventry{Gaussian Processes for Probabilistic Earthquake Ground Motion Prediction}{November 2024}{Workshop Leader, Oxford Intelligent Earth CDT}{}
-\begin{itemize}
-    \item Led workshop for first-year PhD students on probabilistic fusion of seismic velocity models using Gaussian Processes
-    \item Created open-source Jupyter notebook with interactive examples demonstrating data fusion and uncertainty quantification
-    \item Designed progressive exercises covering engineering safety assessment and computational optimization
-    \item Materials available at: \href{https://github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}{github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}
-\end{itemize}
+% Professional Experience - cv-1 compact style
+\section*{Professional Experience}
+\cventry{Assistant Programme Coordinator}{June -- August 2020}{Squash British Columbia, Vancouver}{}
+COVID-19 pandemic response design. Communications management and virtual event organization.
 
-% Work Experience
-\section*{Non-Technical Professional Experience}
+\cventry{Assistant Squash Professional}{June 2016 -- September 2018}{Jericho Tennis Club, Vancouver}{}
+Junior and adult coaching. Positive sports environment development.
 
-\cventry{Assistant Programme Coordinator}{June -- August 2020}{Squash British Columbia, Vancouver, Canada}{}
-\begin{itemize}
-    \item Collaborated with Executive Director to design Squash BC's COVID-19 pandemic response
-    \item Managed communications to member facilities through website, newsletters, and online meetings
-    \item Organized virtual panel discussion on university opportunities for competitive junior squash players
-\end{itemize}
-
-\cventry{Part-Time Assistant Squash Professional}{June 2016 -- September 2018}{Jericho Tennis Club, Vancouver, Canada}{}
-\begin{itemize}
-    \item Coached junior and adult squash players in private and group lessons
-    \item Created positive sports environment and served as role model for junior squash players
-\end{itemize}
-
-% Awards and Recognition
+% Awards - cv-1 compact style
 \section*{Awards \& Recognition}
+IAGA/IASPEI Travel Grant (2025) $\bullet$ British Seismology Best Student Poster (2024) $\bullet$ SWJ Smith Prize - Highest M.Sci. Physics Graduate (2022) $\bullet$ Physics Sports Scholarship (2019-2022) $\bullet$ Governor General's Academic Medal (2018) $\bullet$ BC Academic Achievement Scholarship (2018)
 
-\begin{itemize}
-    \item IAGA/IASPEI 2025 Travel Grant -- Free registration (€290 value) (2025)
-    \item British Seismology Meeting 2024 -- Best Student Poster Prize (2024)
-    \item University of Birmingham School of Physics and Astronomy SWJ Smith Prize -- M.Sci. Physics graduate with highest overall mark (2022)
-    \item University of Birmingham Physics Sports Scholarship (2019-2022) -- Combined academic and athletic excellence
-    \item Canadian Governor General's Academic Medal -- Highest GPA graduate (2018)
-    \item British Columbia Academic Achievement Scholarship (2018)
-    \item University of Birmingham School of Physics and Astronomy Academic Achievement Scholarship (2018/19)
-    \item SFU Applied Sciences Math 11 Award, Simon Fraser University (2017)
-\end{itemize}
-
-% Technical Skills
+% Technical Skills - cv-1 compact style
 \section*{Technical Skills}
+\textbf{Programming:} Python (7+ years), MATLAB, Bash, HTML \\
+\textbf{ML \& Data Science:} TensorFlow, PyTorch, Gaussian Processes, Bayesian inference \\
+\textbf{Geophysics:} Finite difference methods, seismic wave propagation, geospatial data \\
+\textbf{Tools:} GitHub/GitLab, LaTeX, VSCode \\
+\textbf{Methods:} Probabilistic methods, numerical methods, open-source development
 
-\textbf{Programming:} Python (7+ years), MATLAB, Bash, HTML\\
-\textbf{Machine Learning \& Data Science:} TensorFlow, PyTorch, Weights \& Biases, Gaussian Processes, Bayesian inference\\
-\textbf{Geophysical Modeling:} Finite difference methods, seismic wave propagation, geospatial data handling\\
-\textbf{Software \& Tools:} GitHub/GitLab, LaTeX, Overleaf, VSCode, Microsoft Office\\
-\textbf{Research Methods:} Probabilistic methods, statistical analysis, machine learning, numerical methods, scientific computing, open-source development
+% Conferences - cv-1 compact style
+\section*{Selected Conferences \& Presentations}
+\cventry{Invited Talk}{November 2024}{University of Exeter}{Gaussian process methods for ground motion prediction}
 
-% Conferences and Presentations
-\section*{Conferences \& Presentations}
+\cventry{Oral Presentation}{September 2025}{IAGA/IASPEI Assembly, Lisbon}{Probabilistic fusion of seismic velocity models}
 
-\subsection*{Invited Talks}
-\cventry{Towards physics-based probabilistic estimates of earthquake ground motion using Gaussian processes}{November 13, 2024}{Department of Mathematics and Statistics, University of Exeter}{}
-\begin{itemize}
-    \item Presented methods for incorporating uncertainties from seismic velocity model inconsistencies in earthquake ground motion prediction using Gaussian process regression
-\end{itemize}
+\cventry{Poster}{December 2024}{NeurIPS ML4PS Workshop, Vancouver}{Gaussian Process workflow for earthquake ground motion}
 
-\subsection*{Conference Presentations}
-\cventry{Probabilistic fusion of seismic velocity models using Gaussian processes}{September 4, 2025}{IAGA/IASPEI Joint Scientific Assembly, Lisbon, Portugal}{Oral presentation}
-\begin{itemize}
-    \item Session J04b: Data assimilation and Machine Learning
-    \item Presented scalable Gaussian process methods for probabilistic fusion of overlapping seismic velocity models to improve uncertainty quantification in physics-based seismic hazard analysis
-\end{itemize}
+\cventry{Poster (\textit{Best Student Prize})}{March 2024}{British Seismology Meeting, Reading}{Neural process methods for seismic velocity merging}
 
-\cventry{Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept}{December 2024}{ML4PS Workshop at NeurIPS 2024, Vancouver, Canada}{Poster presentation}
-\begin{itemize}
-    \item Demonstrated proof-of-concept workflow for incorporating uncertainties from seismic velocity model inconsistencies into ground motion predictions using Gaussian processes
-\end{itemize}
+\cventry{Workshop}{March 2023}{SPIN ITN, Pitlochry, Scotland}{Earth imaging and inverse problems in geophysics}
 
-\cventry{Physics-based probabilistic estimates of earthquake ground shaking: A synthetic 1D proof of concept}{June 2024}{NERC DTP Student Conference, Oxford, UK}{Poster presentation}
-\begin{itemize}
-    \item Presented initial results on probabilistic approaches for earthquake ground motion prediction accounting for velocity model uncertainties
-\end{itemize}
-
-\cventry{Probabilistic merging of seismic velocity datasets using deep learning: A case study on synthetic data}{March 2024}{British Seismology Meeting, Reading, UK}{Poster presentation -- \textit{Best Student Poster Prize}}
-\begin{itemize}
-    \item Demonstrated neural process-based methods for merging overlapping seismic velocity datasets and their impact on earthquake ground motion simulations
-\end{itemize}
-
-\subsection*{Professional Development}
-\cventry{Interrogating the Restless Earth}{March 19--24, 2023}{SPIN ITN (Seismology and Plate tectonics Imaging Network), Pitlochry, Scotland}{5-day intensive workshop}
-\begin{itemize}
-    \item Earth imaging, monitoring and inverse problems in geophysics
-    \item Topics: optimal experimental design, variational inference, uncertainties, transdimensional inference, and machine learning methods
-\end{itemize}
-
-% Languages
+% Languages - cv-1 compact style
 \section*{Languages}
+English (Native) $\bullet$ French (Professional) $\bullet$ Romanian (Basic)
 
-\textbf{English:} Native proficiency \quad \textbf{French:} Professional working proficiency \quad \textbf{Romanian:} Basic proficiency
-
-% Extracurricular Activities
+% Extracurricular - cv-1 compact style
 \section*{Extracurricular Activities}
+\textbf{Competitive Squash:} Silver medal (2019 Canada Winter Games), Gold medal (2022 BUCS Championships), University of Birmingham President (2019-2020) \\
+\textbf{Other Interests:} Skiing, hiking, cycling, climbing, photography
 
-\subsection*{Competitive Squash}
-\begin{itemize}
-    \item Silver medal, 2019 Canada Winter Games; Gold medal, 2022 BUCS Squash Team Championships
-    \item 1st team player, University of Birmingham (2018-2022)
-    \item President, University of Birmingham Squash Club (2019-2020)
-    \item Sport Colours Award for outstanding contribution (2020)
-\end{itemize}
-
-\subsection*{Other Interests}
-Skiing, hiking, road/mountain biking, bouldering/climbing, photography
-
-% Professional Memberships
+% Memberships - cv-1 compact style
 \section*{Professional Memberships}
-
-\begin{itemize}
-    \item Fellow of the Royal Astronomical Society (elected February 14, 2025)
-    \item Institute of Physics Member (Studying) (2018 -- present)
-\end{itemize}
+Fellow of the Royal Astronomical Society (2025) $\bullet$ Institute of Physics Member (2018--present)
 
 \end{document}
