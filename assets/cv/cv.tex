@@ -122,8 +122,18 @@
     \vspace{0.5em}
 }
 
+% Professional development entry command
+% Usage: \profdeventry{title}{date}{organizer}{location}{description (opt)}
+\newcommand{\profdeventry}[5]{%
+    \par\noindent\hspace{1.5em}%
+    \begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+    \textbf{\textit{#1}} \hfill #2\\
+    \textbf{#3}, \textit{#4}\\
+    \if\relax\detokenize{#5}\relax\else{\small #5}\\\fi
+    \end{minipage}\par
+    \vspace{0.5em}
+}
 
-% 
 \begin{document}
 
 % Suppress header on first page
@@ -203,6 +213,33 @@ Analyzed results and their implications for commercial applications.
 \item E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Physical Review A} \textbf{104}, 012619 (2021). \href{https://doi.org/10.1103/PhysRevA.104.012619}{DOI: 10.1103/PhysRevA.104.012619}.
 \end{etaremune}
 
+\section*{Conference Presentations}
+\renewcommand{\labelenumi}{[\arabic{enumi}]}
+\begin{etaremune}[itemsep=4pt, start=4]
+
+\item \textbf{S.A. Scivier}, P. Koelemeijer, T. Nissen-Meyer, and A.M. Mag, ``Probabilistic fusion of seismic velocity models using Gaussian processes,'' \textit{Oral presentation}, IAGA/IASPEI Joint Scientific Meeting, Lisbon, Portugal (September 2025). Session J04 - Data assimilation and Machine Learning: Challenges and Leveraging New Opportunities.
+
+\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{Poster presentation}, ML4PS Workshop at NeurIPS 2024, Vancouver, Canada (December 2024).
+
+\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Physics-based probabilistic estimates of earthquake ground shaking: A synthetic 1D proof of concept,'' \textit{Poster presentation}, NERC DTP Student Conference 2024, Oxford, UK (June 2024).
+
+\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Probabilistic merging of seismic velocity datasets using deep learning: a case study on synthetic data,'' \textit{Poster presentation}, British Seismology Meeting 2024, Reading, UK (March 2024). \textbf{Winner of Best Student Poster Prize}.
+
+\end{etaremune}
+
+\section*{Software \& Repositories}
+\renewcommand{\labelenumi}{[\arabic{enumi}]}
+\begin{etaremune}[itemsep=4pt, start=2]
+
+\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{Software} (2024). Zenodo. \href{https://doi.org/10.5281/zenodo.14545465}{DOI: 10.5281/zenodo.14545465}. GitHub: \href{https://github.com/sscivier/gp-prob-earthquake-shaking}{github.com/sscivier/gp-prob-earthquake-shaking}.
+
+\item \textbf{S.A. Scivier}, ``Workshop materials on Gaussian Processes for probabilistic earthquake ground motion prediction,'' \textit{Educational Software Repository} (2024). GitHub: \href{https://github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}{github.com/sscivier/intelligent-earth-cdt-earthquakes-gp}. Interactive Jupyter notebook with educational examples and comprehensive utility modules for GP modeling, wave propagation, and visualization.
+
+\end{etaremune}
+
+\section*{Invited Talks}
+\talkentry{Towards physics-based probabilistic estimates of earthquake ground motion using Gaussian processes}{11/2024}{Mathematics and Statistics Seminar Series, University of Exeter}{Exeter, UK}{Seminar on developing probabilistic methods for incorporating uncertainties from seismic velocity model inconsistencies in earthquake ground motion prediction using Gaussian process regression.}
+
 % Teaching & Outreach - cv-1 compact style
 \section*{Teaching \& Outreach}
 
@@ -247,22 +284,9 @@ Created a positive and inclusive sports environment, and served as a role model 
 \end{minipage}\par
 \vspace{0.5em}
 
-\section*{Invited Talks}
-\talkentry{Towards physics-based probabilistic estimates of earthquake ground motion using Gaussian processes}{11/2024}{Mathematics and Statistics Seminar Series, University of Exeter}{Exeter, UK}{Seminar on developing probabilistic methods for incorporating uncertainties from seismic velocity model inconsistencies in earthquake ground motion prediction using Gaussian process regression.}
+\section*{Professional Development}
 
-\section*{Conference Presentations}
-
-% Conferences - cv-1 compact style
-\section*{Selected Conferences \& Presentations}
-\cventry{Invited Talk}{November 2024}{University of Exeter}{Gaussian process methods for ground motion prediction}
-
-\cventry{Oral Presentation}{September 2025}{IAGA/IASPEI Assembly, Lisbon}{Probabilistic fusion of seismic velocity models}
-
-\cventry{Poster}{December 2024}{NeurIPS ML4PS Workshop, Vancouver}{Gaussian Process workflow for earthquake ground motion}
-
-\cventry{Poster (\textit{Best Student Prize})}{March 2024}{British Seismology Meeting, Reading}{Neural process methods for seismic velocity merging}
-
-\cventry{Workshop}{March 2023}{SPIN ITN, Pitlochry, Scotland}{Earth imaging and inverse problems in geophysics}
+\profdeventry{SPIN Short Course 3: ``Interrogating the Restless Earth''}{03/2023}{SPIN ITN}{Pitlochry, Scotland, UK}{5-day intensive workshop on Earth imaging, monitoring and inverse problems in geophysics, covering mathematical theory and practical applications including optimal experimental design, variational inference, uncertainties, transdimensional inference, and machine learning methods.}
 
 % Languages - cv-1 compact style
 \section*{Languages}
