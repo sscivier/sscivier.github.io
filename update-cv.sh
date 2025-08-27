@@ -5,6 +5,45 @@
 
 echo "Compiling LaTeX CV to PDF..."
 
+# Function to check if a LaTeX package is installed
+check_package() {
+    tlmgr info --list --only-installed | grep -q "^i $1:"
+    return $?
+}
+
+# Function to install missing packages
+install_missing_packages() {
+    local packages_to_install=""
+    local required_packages=("geometry" "enumitem" "hyperref" "titlesec" "parskip" "fontawesome5")
+    
+    echo "Checking required LaTeX packages..."
+    
+    for package in "${required_packages[@]}"; do
+        if ! check_package "$package"; then
+            echo "  ❌ Package $package not found"
+            packages_to_install="$packages_to_install $package"
+        else
+            echo "  ✅ Package $package is installed"
+        fi
+    done
+    
+    if [ -n "$packages_to_install" ]; then
+        echo "Installing missing packages:$packages_to_install"
+        sudo tlmgr install $packages_to_install
+        if [ $? -ne 0 ]; then
+            echo "❌ Failed to install packages. Please install manually with:"
+            echo "sudo tlmgr install$packages_to_install"
+            exit 1
+        fi
+        echo "✅ Missing packages installed successfully"
+    else
+        echo "✅ All required packages are installed"
+    fi
+}
+
+# Check and install missing packages
+install_missing_packages
+
 # Navigate to CV directory
 cd "$(dirname "$0")/assets/cv"
 
