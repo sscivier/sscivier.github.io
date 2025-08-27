@@ -14,7 +14,7 @@ check_package() {
 # Function to install missing packages
 install_missing_packages() {
     local packages_to_install=""
-    local required_packages=("geometry" "enumitem" "hyperref" "titlesec" "parskip" "fontawesome5")
+    local required_packages=("geometry" "enumitem" "hyperref" "titlesec" "parskip" "fontawesome5" "etaremune")
     
     echo "Checking required LaTeX packages..."
     

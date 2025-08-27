@@ -9,6 +9,7 @@
 \usepackage{xcolor}
 \usepackage{fontawesome}
 \usepackage{microtype}
+\usepackage{etaremune}
 
 % Color scheme
 \definecolor{darkblue}{RGB}{25,25,112}
@@ -142,15 +143,17 @@ Worked in a commercial research laboratory, preparing membrane samples and testi
 Analyzed results and their implications for commercial applications.
 }
 
-% Publications - formatted with numbered references
+% Publications - formatted with reverse numbered references [3], [2], [1]
 \section*{Publications}
-\begin{enumerate}
+\renewcommand{\labelenumi}{[\arabic{enumi}]}
+\begin{etaremune}[itemsep=4pt, start=3]
+
 \item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{arXiv:2412.03299 [physics.geo-ph]} (2024). \href{https://doi.org/10.48550/arXiv.2412.03299}{DOI: 10.48550/arXiv.2412.03299}. Peer-reviewed and presented at ML4PS Workshop at NeurIPS 2024.
 
 \item N.S. Blunt, J. Camps, O. Crawford, R. Izsák, S. Leontica, A. Mirani, A.E. Moylett, \textbf{S.A. Scivier}, et al., ``Perspective on the current state-of-the-art of quantum computing for drug discovery applications,'' \textit{Journal of Chemical Theory and Computation} \textbf{18}, 7001-7023 (2022). \href{https://doi.org/10.1021/acs.jctc.2c00574}{DOI: 10.1021/acs.jctc.2c00574}.
 
 \item E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Physical Review A} \textbf{104}, 012619 (2021). \href{https://doi.org/10.1103/PhysRevA.104.012619}{DOI: 10.1103/PhysRevA.104.012619}.
-\end{enumerate}
+\end{etaremune}
 
 % Teaching & Outreach - cv-1 compact style
 \section*{Teaching \& Outreach}
