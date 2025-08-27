@@ -66,6 +66,17 @@
     \vspace{0.5em}
 }
 
+% Research entry command
+% Usage: \resentry{title}{date}{institution}{location}{description (opt)}
+\newcommand{\resentry}[5]{%
+    \par\noindent\hspace{1.5em}%
+    \begin{minipage}[t]{\dimexpr\textwidth-1.5em\relax}
+    \textbf{\textit{#1}} \hfill #2\\
+    \textbf{#3}, \textit{#4}\\
+    \if\relax\detokenize{#5}\relax\else{\small #5}\\\fi
+    \end{minipage}\par
+    \vspace{0.5em}
+}
 
 \begin{document}
 
@@ -88,8 +99,8 @@
 
 \vspace{0.5em}
 
-% Professional Summary - cv-1 compact style
-\section*{Professional Summary}
+% Summary
+\section*{Summary \& Interests}
 \begin{summary}
 I am a PhD student in the Department of Earth Sciences at the University of Oxford, developing probabilistic methods for uncertainty quantification in geophysics. 
 I hold a Master’s in Physics from the University of Birmingham and have gained industry experience through internships in quantum computing at D-Wave Systems (Canada) and Riverlane (UK). 
@@ -100,34 +111,45 @@ I am interested in applying physics-based computational, data science, and machi
 % Education - cv-1 compact style
 \section*{Education}
 
-\eduentry{Ph.D.}{Geophysics}{University of Oxford}{Oxford, UK}{10/2022 -- Present}{Expected 2026}{Oxford-NERC DTP in Environmental Research (Full studentship $\sim$ \pounds 120k)}{Paula Koelemeijer, Tarje Nissen-Meyer, Atılım Güneş Baydin}{Gaussian processes for the probabilistic fusion of geophysical datasets -- with application to seismic hazard assessment.}
+\eduentry{Ph.D.}{Geophysics}{University of Oxford (Hertford College)}{Oxford, UK}{10/2022 -- Present}{Expected 2026}{Oxford-NERC DTP in Environmental Research (Full studentship $\sim$ \pounds 120k)}{Paula Koelemeijer, Tarje Nissen-Meyer, Atılım Güneş Baydin}{Gaussian processes for the probabilistic fusion of geophysical datasets -- with application to seismic hazard assessment.}
 
-\eduentry{M.Sci.}{Physics (First Class Honours)}{University of Birmingham}{Birmingham, UK}{10/2018 -- 07/2022}{}{}{Alberto Vecchio}{Specialized coursework in theoretical and quantum physics, radar and imaging techniques. \\Final project: Machine learning algorithms for early identification of massive black hole binary mergers for LISA mission (ESA; launch 2035). \\Third year project: Bayesian inference for parameter estimation of binary black hole mergers in LIGO experiment.}
+\eduentry{M.Sci.}{Physics (First Class Honours)}{University of Birmingham}{Birmingham, UK}{10/2018 -- 07/2022}{}{}{Alberto Vecchio}{Graduated as M.Sci. Physics student with highest overall mark. Specialized coursework in theoretical and quantum physics, radar and imaging techniques. \\Final project: Machine learning algorithms for early identification of massive black hole binary mergers for LISA mission (ESA; launch 2035). \\Third year project: Bayesian inference for parameter estimation of binary black hole mergers in LIGO experiment.}
 
 \eduentry{High School Diploma}{British Columbia}{Prince of Wales Secondary School}{Vancouver, Canada}{09/2013 -- 06/2018}{}{}{}{Graduated as highest GPA student. Top scholar for Grades 10, 11, and 12.}
 
-% Research Experience - cv-1 compact style
-\section*{Research Experience}
-\cventry{PhD Researcher}{October 2022 -- present}{Department of Earth Sciences, University of Oxford}{}
-Probabilistic methods for uncertainty quantification in physics-based seismic hazard assessment. Gaussian process approaches for geospatial data fusion. Open-source software development.
+% Research Experience
+\section*{Research Experience \& Employment}
 
-\cventry{Quantum Science Intern}{June -- August 2021}{Riverlane, Cambridge, UK}{}
-Resource efficiency in quantum computation. Python software development for quantum computers.
+\resentry{Ph.D. Researcher}{10/2022 -- Present}{Department of Earth Sciences, University of Oxford}{Oxford, UK}{%
+Working on probabilistic methods for uncertainty quantification in geophysics.
+Developed Gaussian process-based approach for geospatial data fusion with applications to earthquake ground motion prediction and seismic hazard assessment.
+Building collaborations to extend methods to other geophysical problems, and developing open-source software to make methods broadly accessible across the geosciences.
+}
 
-\cventry{Quantum Research Intern}{June -- August 2019}{D-Wave Systems Inc., Burnaby, Canada}{}
-Theoretical research in quantum technology. MATLAB simulations of nonstoquastic quantum processing. Co-authored Physical Review A paper (2021).
+\resentry{Quantum Science Intern}{06/2021 -- 08/2021}{Riverlane}{Cambridge, UK}{%
+Focused on improving resource efficiency in quantum computation, and developed software for quantum computers using Python.
+Collaborated with a multidisciplinary team of physicists, chemists, mathematicians, and software engineers.
+Delivered algorithm implementation and research presentation, and co-authored a paper published in the \textit{Journal of Chemical Theory and Computation} (2022).
+}
 
-\cventry{Student Science Mentorship}{March -- April 2016}{DPoint Technologies Inc., Vancouver}{}
-Membrane sample preparation and testing for energy recovery applications.
+\resentry{Quantum Research Intern}{06/2019 -- 08/2019}{D-Wave Systems}{Burnaby, Canada}{%
+Conducted theoretical research in quantum technology and applications, using MATLAB for simulations of nonstoquastic quantum processing and analysis.
+Designed optimization protocol for nonstoquastic quantum annealing, and co-authored a paper published in \textit{Physical Review A} (2021).
+}
 
-% Publications - cv-1 compact style
+\resentry{Student Science Mentee}{03/2016 -- 04/2016}{DPoint Technologies}{Vancouver, Canada}{%
+Worked in a commercial research laboratory, preparing membrane samples and testing them using analytical equipment.
+Analyzed results and their implications for commercial applications.
+}
+
+% Publications - formatted with numbered references
 \section*{Publications}
 \begin{enumerate}
-\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{arXiv:2412.03299} (2024).
+\item \textbf{S.A. Scivier}, T. Nissen-Meyer, P. Koelemeijer, and A.G. Baydin, ``Gaussian Processes for Probabilistic Estimates of Earthquake Ground Shaking: A 1-D Proof-of-Concept,'' \textit{arXiv:2412.03299 [physics.geo-ph]} (2024). \href{https://doi.org/10.48550/arXiv.2412.03299}{DOI: 10.48550/arXiv.2412.03299}. Peer-reviewed and presented at ML4PS Workshop at NeurIPS 2024.
 
-\item N.S. Blunt, J. Camps, O. Crawford, R. Izsák, S. Leontica, A. Mirani, A.E. Moylett, \textbf{S.A. Scivier}, et al., ``Perspective on quantum computing for drug discovery,'' \textit{J. Chem. Theory Comput.} \textbf{18}, 7001-7023 (2022).
+\item N.S. Blunt, J. Camps, O. Crawford, R. Izsák, S. Leontica, A. Mirani, A.E. Moylett, \textbf{S.A. Scivier}, et al., ``Perspective on the current state-of-the-art of quantum computing for drug discovery applications,'' \textit{Journal of Chemical Theory and Computation} \textbf{18}, 7001-7023 (2022). \href{https://doi.org/10.1021/acs.jctc.2c00574}{DOI: 10.1021/acs.jctc.2c00574}.
 
-\item E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Phys. Rev. A} \textbf{104}, 012619 (2021).
+\item E.M. Lykiardopoulou, A. Zucca, \textbf{S.A. Scivier}, and M.H. Amin, ``Improving nonstoquastic quantum annealing with spin-reversal transformations,'' \textit{Physical Review A} \textbf{104}, 012619 (2021). \href{https://doi.org/10.1103/PhysRevA.104.012619}{DOI: 10.1103/PhysRevA.104.012619}.
 \end{enumerate}
 
 % Teaching & Outreach - cv-1 compact style
