@@ -1,2 +1,11 @@
 User-agent: *
-Disallow: /
+Allow: /
+
+# Exclude source files and development directories
+Disallow: /assets/cv/
+Disallow: /bib/
+Disallow: /.git/
+Disallow: /update-cv.sh
+
+# Future sitemap reference
+Sitemap: https://sscivier.github.io/sitemap.xml
