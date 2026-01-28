@@ -48,14 +48,14 @@ install_missing_packages
 cd "$(dirname "$0")/assets/cv"
 
 # Compile the LaTeX CV to PDF
-pdflatex cv.tex
+pdflatex sam-scivier-cv.tex
 
 # Check if first compilation was successful
 if [ $? -eq 0 ]; then
     echo "✅ First LaTeX compilation successful"
     
     # Run pdflatex again to resolve cross-references (like page numbers)
-    pdflatex cv.tex
+    pdflatex sam-scivier-cv.tex
     
     if [ $? -eq 0 ]; then
         echo "✅ Second LaTeX compilation successful"
@@ -69,15 +69,15 @@ else
 fi
 
 # Check if final compilation was successful
-if [ -f "cv.pdf" ]; then
+if [ -f "sam-scivier-cv.pdf" ]; then
     echo "✅ LaTeX compilation complete"
     
     # Copy PDF to website root
-    cp cv.pdf ../../cv.pdf
+    cp sam-scivier-cv.pdf ../../sam-scivier-cv.pdf
     
     if [ $? -eq 0 ]; then
         echo "✅ PDF copied to website root"
-        echo "✅ CV is now available at /cv.pdf"
+        echo "✅ CV is now available at /sam-scivier-cv.pdf"
     else
         echo "❌ Failed to copy PDF to website root"
         exit 1
